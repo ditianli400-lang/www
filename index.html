@@ -6,7 +6,7 @@
 <title>附近配對</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
 
-<!-- Meta Pixel Code (整合兩個 Pixel) -->
+<!-- Meta Pixel Code -->
 <script>
 !function(f,b,e,v,n,t,s)
 {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -16,14 +16,10 @@ n.queue=[];t=b.createElement(e);t.async=!0;
 t.src=v;s=b.getElementsByTagName(e)[0];
 s.parentNode.insertBefore(t,s)}(window, document,'script',
 'https://connect.facebook.net/en_US/fbevents.js');
-
-fbq('init', '2130611467893262');   /* 原本的 Pixel */
-fbq('init', '4160886137544346');   /* 新增的 Pixel */
+fbq('init', '4160886137544346');
 fbq('track', 'PageView');
 </script>
 <noscript>
-<img height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=2130611467893262&ev=PageView&noscript=1"/>
 <img height="1" width="1" style="display:none"
 src="https://www.facebook.com/tr?id=4160886137544346&ev=PageView&noscript=1"/>
 </noscript>
@@ -226,24 +222,22 @@ color:#475569;
 </head>
 <body>
 <div class="mobile">
+
+<!-- 首頁 -->
 <div id="home">
 <div class="header">
-<h2>
-配對成功（已認證）
-</h2>
-<div class="timer">
-04:38
+<h2>配對成功（已認證）</h2>
+<div class="timer">04:38</div>
 </div>
-</div>
-<div class="container" id="userList">
-</div>
+
+<div class="container" id="userList"></div>
+
 <div class="unlock-bar" onclick="unlockInfo()">
 🔒 解鎖查看更多資訊
 </div>
+
 <footer class="footer">
-<div class="footer-title">
-正在為您配對附近最契合的朋友
-</div>
+<div class="footer-title">正在為您配對附近最契合的朋友</div>
 <div class="footer-line"></div>
 <p>
 【合規聲明】本平台僅提供配對與約會服務，
@@ -256,239 +250,221 @@ color:#475569;
 如發現違規內容，請立即聯絡客服。
 </p>
 <div class="footer-links">
-<a href="#">
-隱私權政策
-</a>
+<a href="#">隱私權政策</a>
 <span>|</span>
-<a href="#">
-服務條款
-</a>
+<a href="#">服務條款</a>
 <span>|</span>
-<a href="#">
-聯絡我們
-</a>
+<a href="#">聯絡我們</a>
 </div>
 </footer>
 </div>
+
+<!-- 聊天頁 -->
+<div id="chat" class="chat-page">
+<div class="chat-header">
+<button class="back" onclick="backHome()">←</button>
+<img id="chatAvatar" class="avatar" src="">
+<div>
+<div class="chat-name" id="chatName"></div>
+<div style="color:#22c55e;font-size:12px;">● 在線</div>
+</div>
+</div>
+<div class="messages" id="messages"></div>
+<div class="chat-bottom">
+<button onclick="unlockInfo()">開始聊天</button>
+</div>
+</div>
+
+</div>
+
 <script>
-// LINE輪轉池
+// LINE 輪轉池
 const linePool = [
-"https://line.me/ti/p/~jy693",
+"https://line.me/ti/p/~jy693"
 ];
 let lineIndex = 0;
-const users=[
+
+const users = [
 {
-name:"玥玥",
-img:"46.jpg",
-distance:"附近0.8km",
-views:"1265人看過",
-messages:[
+name: "玥玥",
+img: "46.jpg",
+distance: "附近0.8km",
+views: "1265人看過",
+messages: [
 "嗨～很高興認識你😊",
 "看到你的資料覺得很有趣",
 "平常喜歡什麼休閒活動呢？"
 ]
 },
 {
-name:"雅琪",
-img:"002.jpg",
-distance:"附近1.2km",
-views:"856人看過",
-messages:[
+name: "雅琪",
+img: "002.jpg",
+distance: "附近1.2km",
+views: "856人看過",
+messages: [
 "你好呀～",
 "今天過得還順利嗎？",
 "可以聊聊你的興趣呀"
 ]
 },
 {
-name:"曉婷",
-img:"003.jpg",
-distance:"附近2km",
-views:"728人看過",
-messages:[
+name: "曉婷",
+img: "003.jpg",
+distance: "附近2km",
+views: "728人看過",
+messages: [
 "很高興認識你",
 "平常喜歡聽音樂放鬆",
 "你呢？"
 ]
 },
 {
-name:"子晴",
-img:"004.jpg",
-distance:"附近3km",
-views:"624人看過",
-messages:[
+name: "子晴",
+img: "004.jpg",
+distance: "附近3km",
+views: "624人看過",
+messages: [
 "嗨～謝謝你的關注",
 "希望可以慢慢認識彼此",
 "分享生活中的小事情"
 ]
 },
 {
-name:"欣怡",
-img:"005.jpg",
-distance:"附近1.8km",
-views:"945人看過",
-messages:[
+name: "欣怡",
+img: "005.jpg",
+distance: "附近1.8km",
+views: "945人看過",
+messages: [
 "晚上好😊",
 "今天忙完了嗎？",
 "最近有沒有開心的事情？"
 ]
 },
 {
-name:"雨薇",
-img:"006.jpg",
-distance:"附近2.5km",
-views:"532人看過",
-messages:[
+name: "雨薇",
+img: "006.jpg",
+distance: "附近2.5km",
+views: "532人看過",
+messages: [
 "第一次聊天有點害羞",
 "但是認識新朋友很開心",
 "你平常喜歡做什麼？"
 ]
 },
 {
-name:"安琪",
-img:"007.jpg",
-distance:"附近4km",
-views:"861人看過",
-messages:[
+name: "安琪",
+img: "007.jpg",
+distance: "附近4km",
+views: "861人看過",
+messages: [
 "你好～",
 "希望找到聊得來的朋友",
 "慢慢了解彼此"
 ]
 },
 {
-name:"小雅",
-img:"008.jpg",
-distance:"附近1km",
-views:"1142人看過",
-messages:[
+name: "小雅",
+img: "008.jpg",
+distance: "附近1km",
+views: "1142人看過",
+messages: [
 "剛看到你的資料",
 "感覺很不錯",
 "有機會多聊聊吧"
 ]
 },
 {
-name:"夢琪",
-img:"4863.jpg",
-distance:"附近3.5km",
-views:"692人看過",
-messages:[
+name: "夢琪",
+img: "4863.jpg",
+distance: "附近3.5km",
+views: "692人看過",
+messages: [
 "你好呀～",
 "今天心情如何？",
 "期待認識新朋友"
 ]
 },
 {
-name:"直君",
-img:"000.jpg",
-distance:"附近0.5km",
-views:"1037人看過",
-messages:[
+name: "直君",
+img: "000.jpg",
+distance: "附近0.5km",
+views: "1037人看過",
+messages: [
 "嗨～很開心認識你",
 "平常喜歡旅行嗎？",
 "可以交流一下興趣"
 ]
 }
 ];
-const list=document.getElementById("userList");
-users.forEach((user,index)=>{
-let card=document.createElement("div");
-card.className="card";
-card.innerHTML=`
-<div class="online-tag">
-現在可約
-</div>
+
+const list = document.getElementById("userList");
+users.forEach((user, index) => {
+let card = document.createElement("div");
+card.className = "card";
+card.innerHTML = `
+<div class="online-tag">現在可約</div>
 <img src="${user.img}">
 <div class="info">
-<div class="name">
-${user.name}
+<div class="name">${user.name}</div>
+<div class="location">📍${user.distance}</div>
+<div class="views">${user.views}</div>
 </div>
-<div class="location">
-📍${user.distance}
-</div>
-<div class="views">
-${user.views}
-</div>
-</div>
-<button class="btn">
-查看資料
-</button>
+<button class="btn">查看資料</button>
 `;
-card.onclick=()=>{
+card.onclick = () => {
 openChat(index);
 };
 list.appendChild(card);
 });
-function openChat(index){
-let user=users[index];
-document.getElementById("home").style.display="none";
-document.getElementById("chat").style.display="block";
-document.getElementById("chatAvatar").src=user.img;
-document.getElementById("chatName").innerHTML=user.name;
-let box=document.getElementById("messages");
-box.innerHTML="";
-user.messages.forEach(text=>{
-let div=document.createElement("div");
-div.className="msg";
-div.innerHTML=text;
+
+function openChat(index) {
+let user = users[index];
+document.getElementById("home").style.display = "none";
+document.getElementById("chat").style.display = "block";
+document.getElementById("chatAvatar").src = user.img;
+document.getElementById("chatName").innerHTML = user.name;
+
+let box = document.getElementById("messages");
+box.innerHTML = "";
+user.messages.forEach(text => {
+let div = document.createElement("div");
+div.className = "msg";
+div.innerHTML = text;
 box.appendChild(div);
 });
 }
-function backHome(){
-document.getElementById("chat").style.display="none";
-document.getElementById("home").style.display="block";
+
+function backHome() {
+document.getElementById("chat").style.display = "none";
+document.getElementById("home").style.display = "block";
 }
-function unlockInfo(){
+
+function unlockInfo() {
 goLine();
 }
-function goLine(){
+
+function goLine() {
 let url = linePool[lineIndex];
-// 下一次換下一個
 lineIndex++;
-if(lineIndex >= linePool.length){
+if (lineIndex >= linePool.length) {
 lineIndex = 0;
 }
-// 跳轉LINE
-window.location.href=url;
+window.location.href = url;
 }
-</script>
-<!-- 聊天頁 -->
-<div id="chat" class="chat-page">
-<div class="chat-header">
-<button class="back" onclick="backHome()">
-←
-</button>
-<img id="chatAvatar" class="avatar" src="">
-<div>
-<div class="chat-name" id="chatName">
-</div>
-<div style="color:#22c55e;font-size:12px;">
-● 在線
-</div>
-</div>
-</div>
-<div class="messages" id="messages">
-</div>
-<div class="chat-bottom">
-<button onclick="unlockInfo()">
-開始聊天
-</button>
-</div>
-</div>
-<script>
+
 // 倒數計時
 let seconds = 278;
-setInterval(()=>{
-if(seconds>0){
+setInterval(() => {
+if (seconds > 0) {
 seconds--;
 }
-let m=Math.floor(seconds/60);
-let s=seconds%60;
-if(s<10){
-s="0"+s;
+let m = Math.floor(seconds / 60);
+let s = seconds % 60;
+if (s < 10) {
+s = "0" + s;
 }
-document.querySelector(".timer").innerHTML=
-m+":"+s;
-},1000);
+document.querySelector(".timer").innerHTML = m + ":" + s;
+}, 1000);
 </script>
-</div>
 </body>
 </html>

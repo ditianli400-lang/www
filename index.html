@@ -16,23 +16,23 @@ n.queue=[];t=b.createElement(e);t.async=!0;
 t.src=v;s=b.getElementsByTagName(e)[0];
 s.parentNode.insertBefore(t,s)}(window, document,'script',
 'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '2905509053137381');
+fbq('init', '1679411907527825');
 fbq('track', 'PageView');
 </script>
 <noscript><img height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=2905509053137381&ev=PageView&noscript=1"
+src="https://www.facebook.com/tr?id=1679411907527825&ev=PageView&noscript=1"
 /></noscript>
 <!-- End Meta Pixel Code -->
 
 <style>
 *{box-sizing:border-box;}
-body{margin:0;background:#050914;font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif;color:#fff;-webkit-tap-highlight-color:transparent;}
+body{margin:0;background:#050914;font-family:"Noto Sans TC",sans-serif;color:#fff;-webkit-tap-highlight-color:transparent;}
 .mobile{width:100%;max-width:430px;min-height:100vh;margin:auto;background:#101827;position:relative;overflow:hidden;}
 .header{text-align:center;padding:20px 10px;}
-.header h2{margin:0;font-size:22px;letter-spacing:1px;}
+.header h2{margin:0;font-size:22px;}
 .timer{margin-top:8px;font-size:22px;font-weight:bold;color:#60a5fa;font-variant-numeric:tabular-nums;}
 .container{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px;padding-bottom:100px;}
-.card{background:#1e293b;border-radius:15px;overflow:hidden;position:relative;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.card{background:#1e293b;border-radius:15px;overflow:hidden;position:relative;cursor:pointer;}
 .online-tag{position:absolute;top:10px;left:10px;z-index:5;background:#f59e0b;color:white;padding:5px 9px;border-radius:8px;font-size:12px;font-weight:bold;}
 .card img{width:100%;height:210px;object-fit:cover;display:block;background:#0f172a;}
 .info{padding:10px;}
@@ -53,155 +53,69 @@ body{margin:0;background:#050914;font-family:"Noto Sans TC","Microsoft JhengHei"
 .footer{padding:30px 20px 90px;font-size:12px;line-height:1.8;color:#94a3b8;}
 .footer-title{text-align:center;font-size:14px;color:#cbd5e1;}
 .footer-line{height:1px;background:#334155;margin:15px 0;}
-.footer-links{text-align:center;margin-top:20px;}
-.footer-links a{color:#94a3b8;text-decoration:none;margin:0 8px;}
-.footer-links span{color:#475569;}
 </style>
 </head>
 <body>
 <div class="mobile">
   <div id="home">
-    <div class="header">
-      <h2>配對成功（已認證）</h2>
-      <div class="timer" id="timer">04:38</div>
-    </div>
+    <div class="header"><h2>配對成功（已認證）</h2><div class="timer" id="timer">04:38</div></div>
     <div class="container" id="userList"></div>
     <div class="unlock-bar" onclick="unlockInfo()">🔓 解鎖查看更多資訊</div>
-    <footer class="footer">
-      <div class="footer-title">正在為您配對附近最契合的朋友</div>
-      <div class="footer-line"></div>
-      <p>【合規聲明】本平台僅提供配對與約會服務，所有用戶資料均依規定進行驗證與審核。平台禁止任何違法、詐欺、騷擾或不當行為。</p>
-      <p>為保障使用者安全，平台建立相關防護措施。如發現違規內容，請立即聯絡客服。</p>
-      <p style="text-align:center;margin-top:12px;opacity:0.6;">© 2026 taiwanline.lol All Rights Reserved.</p>
-      <div class="footer-links">
-        <a href="#">隱私權政策</a><span>|</span>
-        <a href="#">服務條款</a><span>|</span>
-        <a href="#">聯絡我們</a>
-      </div>
-    </footer>
+    <footer class="footer"><div class="footer-title">正在為您配對附近最契合的朋友</div><div class="footer-line"></div><p>【合規聲明】本平台僅提供配對與約會服務</p><p style="text-align:center;opacity:0.6;">© 2026 taiwanline.lol</p></footer>
   </div>
-
   <div id="chat" class="chat-page">
-    <div class="chat-header">
-      <button class="back" onclick="backHome()">←</button>
-      <img id="chatAvatar" class="avatar" src="">
-      <div>
-        <div class="chat-name" id="chatName"></div>
-        <div style="color:#22c55e;font-size:12px;">● 在線</div>
-      </div>
-    </div>
+    <div class="chat-header"><button class="back" onclick="backHome()">←</button><img id="chatAvatar" class="avatar" src=""><div><div class="chat-name" id="chatName"></div><div style="color:#22c55e;font-size:12px;">● 在線</div></div></div>
     <div class="messages" id="messages"></div>
-    <div class="chat-bottom">
-      <button onclick="unlockInfo()">開始聊天</button>
-    </div>
+    <div class="chat-bottom"><button onclick="unlockInfo()">開始聊天</button></div>
   </div>
 </div>
 
 <script>
-// LINE 輪轉池（兩個帳號輪流跳轉）
-const linePool = [
-  "https://line.me/ti/p/~jy693",
-  "https://line.me/ti/p/~sh51256"
-];
-let lineIndex = 0;
-
+const linePool = ["https://line.me/ti/p/~jy693","https://line.me/ti/p/~sh51256"];
 const users = [
-  {name: "玥玥", img: "46.jpg", distance: "附近0.8km", views: "1265人看過", messages: ["嗨～很高興認識你😊","看到你的資料覺得很有趣","平常喜歡什麼休閒活動呢？"]},
-  {name: "雅琪", img: "002.jpg", distance: "附近1.2km", views: "856人看過", messages: ["你好呀～","今天過得還順利嗎？","可以聊聊你的興趣呀"]},
-  {name: "曉婷", img: "003.jpg", distance: "附近2km", views: "728人看過", messages: ["很高興認識你","平常喜歡聽音樂放鬆","你呢？"]},
-  {name: "子晴", img: "004.jpg", distance: "附近3km", views: "624人看過", messages: ["嗨～謝謝你的關注","希望可以慢慢認識彼此","分享生活中的小事情"]},
-  {name: "欣怡", img: "005.jpg", distance: "附近1.8km", views: "945人看過", messages: ["晚上好😊","今天忙完了嗎？","最近有沒有開心的事情？"]},
-  {name: "雨薇", img: "006.jpg", distance: "附近2.5km", views: "532人看過", messages: ["第一次聊天有點害羞","但是認識新朋友很開心","你平常喜歡做什麼？"]},
-  {name: "安琪", img: "007.jpg", distance: "附近4km", views: "861人看過", messages: ["你好～","希望找到聊得來的朋友","慢慢了解彼此"]},
-  {name: "小雅", img: "008.jpg", distance: "附近1km", views: "1142人看過", messages: ["剛看到你的資料","感覺很不錯","有機會多聊聊吧"]},
-  {name: "夢琪", img: "4863.jpg", distance: "附近3.5km", views: "692人看過", messages: ["你好呀～","今天心情如何？","期待認識新朋友"]},
-  {name: "直君", img: "000.jpg", distance: "附近0.5km", views: "1037人看過", messages: ["嗨～很開心認識你","平常喜歡旅行嗎？","可以交流一下興趣"]}
+  {name:"玥玥",img:"46.jpg",distance:"附近0.8km",views:"1265人看過",messages:["嗨～很高興認識你😊","看到你的資料覺得很有趣","平常喜歡什麼休閒活動呢？"]},
+  {name:"雅琪",img:"002.jpg",distance:"附近1.2km",views:"856人看過",messages:["你好呀～","今天過得還順利嗎？","可以聊聊你的興趣呀"]},
+  {name:"曉婷",img:"003.jpg",distance:"附近2km",views:"728人看過",messages:["很高興認識你","平常喜歡聽音樂放鬆","你呢？"]},
+  {name:"子晴",img:"004.jpg",distance:"附近3km",views:"624人看過",messages:["嗨～謝謝你的關注","希望可以慢慢認識彼此","分享生活中的小事情"]},
+  {name:"欣怡",img:"005.jpg",distance:"附近1.8km",views:"945人看過",messages:["晚上好😊","今天忙完了嗎？","最近有沒有開心的事情？"]},
+  {name:"雨薇",img:"006.jpg",distance:"附近2.5km",views:"532人看過",messages:["第一次聊天有點害羞","但是認識新朋友很開心","你平常喜歡做什麼？"]},
+  {name:"安琪",img:"007.jpg",distance:"附近4km",views:"861人看過",messages:["你好～","希望找到聊得來的朋友","慢慢了解彼此"]},
+  {name:"小雅",img:"008.jpg",distance:"附近1km",views:"1142人看過",messages:["剛看到你的資料","感覺很不錯","有機會多聊聊吧"]},
+  {name:"夢琪",img:"4863.jpg",distance:"附近3.5km",views:"692人看過",messages:["你好呀～","今天心情如何？","期待認識新朋友"]},
+  {name:"直君",img:"000.jpg",distance:"附近0.5km",views:"1037人看過",messages:["嗨～很開心認識你","平常喜歡旅行嗎？","可以交流一下興趣"]}
 ];
 
 const list = document.getElementById("userList");
 users.forEach((user, index) => {
   let card = document.createElement("div");
   card.className = "card";
-  card.innerHTML = `
-    <div class="online-tag">現在可約</div>
-    <img src="${user.img}" loading="lazy" onerror="this.style.background='#1e293b';this.src='data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'">
-    <div class="info">
-      <div class="name">${user.name}</div>
-      <div class="location">📍${user.distance}</div>
-      <div class="views">${user.views}</div>
-    </div>
-    <button class="btn">查看資料</button>
-  `;
+  card.innerHTML = `<div class="online-tag">現在可約</div><img src="${user.img}" loading="lazy"><div class="info"><div class="name">${user.name}</div><div class="location">📍${user.distance}</div><div class="views">${user.views}</div></div><button class="btn">查看資料</button>`;
   card.onclick = () => {
-    try {
-      fbq('track', 'ViewContent', {
-        content_name: user.name,
-        content_type: 'product',
-        content_ids: ['profile_' + index],
-        content_category: 'profile_view',
-        value: 1,
-        currency: 'TWD'
-      });
-    } catch(e){}
+    if(window.fbq){ fbq('track','ViewContent',{content_name:user.name,content_type:'product',content_ids:['profile_'+index],content_category:'profile_view',value:1,currency:'TWD'}); }
     openChat(index);
   };
   list.appendChild(card);
 });
 
-function openChat(index) {
-  let user = users[index];
-  document.getElementById("home").style.display = "none";
-  document.getElementById("chat").style.display = "block";
-  document.getElementById("chatAvatar").src = user.img;
-  document.getElementById("chatName").innerHTML = user.name;
-  let box = document.getElementById("messages");
-  box.innerHTML = "";
-  user.messages.forEach(text => {
-    let div = document.createElement("div");
-    div.className = "msg";
-    div.textContent = text;
-    box.appendChild(div);
-  });
-  window.scrollTo(0,0);
+function openChat(index){let u=users[index];document.getElementById("home").style.display="none";document.getElementById("chat").style.display="block";document.getElementById("chatAvatar").src=u.img;document.getElementById("chatName").innerHTML=u.name;let b=document.getElementById("messages");b.innerHTML="";u.messages.forEach(t=>{let d=document.createElement("div");d.className="msg";d.textContent=t;b.appendChild(d);});window.scrollTo(0,0);}
+function backHome(){document.getElementById("chat").style.display="none";document.getElementById("home").style.display="block";}
+function unlockInfo(){
+  if(window.fbq){
+    try{
+      fbq('track','Lead',{content_name:'unlock_more_info',content_category:'line_unlock',value:10,currency:'TWD'});
+      fbq('track','Contact',{content_category:'line_click'});
+    }catch(e){}
+  }
+  setTimeout(()=>{ goLine(); }, 800);
 }
-
-function backHome() {
-  document.getElementById("chat").style.display = "none";
-  document.getElementById("home").style.display = "block";
+function goLine(){
+  let idx=0; try{ idx=parseInt(localStorage.getItem('line_idx')||'0'); if(isNaN(idx)||idx>=linePool.length) idx=0; }catch(e){}
+  let url=linePool[idx];
+  try{ localStorage.setItem('line_idx', String((idx+1)%linePool.length)); }catch(e){}
+  window.location.href=url;
 }
-
-function unlockInfo() {
-  try {
-    fbq('track', 'Lead', {
-      content_name: 'unlock_more_info',
-      content_category: 'line_unlock',
-      value: 10,
-      currency: 'TWD'
-    });
-    fbq('track', 'Contact', {
-      content_category: 'line_click'
-    });
-  } catch(e){}
-  setTimeout(function() {
-    goLine();
-  }, 350);
-}
-
-function goLine() {
-  let url = linePool[lineIndex];
-  lineIndex = (lineIndex + 1) % linePool.length;
-  window.location.href = url;
-}
-
-// 倒數計時 - 已修復補零
-let seconds = 278;
-const timerEl = document.getElementById("timer");
-setInterval(() => {
-  if (seconds > 0) seconds--;
-  let m = Math.floor(seconds / 60);
-  let s = seconds % 60;
-  timerEl.textContent = (m < 10? "0" + m : m) + ":" + (s < 10? "0" + s : s);
-}, 1000);
+let seconds=278; const timerEl=document.getElementById("timer");
+setInterval(()=>{ if(seconds>0) seconds--; let m=Math.floor(seconds/60),s=seconds%60; timerEl.textContent=(m<10?"0"+m:m)+":"+(s<10?"0"+s:s); },1000);
 </script>
 </body>
 </html>

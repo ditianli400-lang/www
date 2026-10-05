@@ -2,8 +2,8 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>附近配對</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>附近配對 - 已為您找到附近的朋友</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
 
 <!-- Meta Pixel Code -->
@@ -26,29 +26,29 @@ src="https://www.facebook.com/tr?id=2905509053137381&ev=PageView&noscript=1"
 
 <style>
 *{box-sizing:border-box;}
-body{margin:0;background:#050914;font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif;color:#fff;}
+body{margin:0;background:#050914;font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif;color:#fff;-webkit-tap-highlight-color:transparent;}
 .mobile{width:100%;max-width:430px;min-height:100vh;margin:auto;background:#101827;position:relative;overflow:hidden;}
 .header{text-align:center;padding:20px 10px;}
-.header h2{margin:0;font-size:22px;}
-.timer{margin-top:8px;font-size:22px;font-weight:bold;color:#60a5fa;}
+.header h2{margin:0;font-size:22px;letter-spacing:1px;}
+.timer{margin-top:8px;font-size:22px;font-weight:bold;color:#60a5fa;font-variant-numeric:tabular-nums;}
 .container{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px;padding-bottom:100px;}
-.card{background:#1e293b;border-radius:15px;overflow:hidden;position:relative;}
+.card{background:#1e293b;border-radius:15px;overflow:hidden;position:relative;cursor:pointer;-webkit-tap-highlight-color:transparent;}
 .online-tag{position:absolute;top:10px;left:10px;z-index:5;background:#f59e0b;color:white;padding:5px 9px;border-radius:8px;font-size:12px;font-weight:bold;}
-.card img{width:100%;height:210px;object-fit:cover;}
+.card img{width:100%;height:210px;object-fit:cover;display:block;background:#0f172a;}
 .info{padding:10px;}
 .name{font-size:17px;font-weight:bold;}
 .location{font-size:12px;color:#fda4af;margin-top:5px;}
 .views{font-size:12px;color:#94a3b8;margin-top:5px;}
-.btn{width:90%;margin:10px 5%;padding:12px;border:none;border-radius:12px;background:linear-gradient(90deg,#3b82f6,#a855f7);color:white;font-size:14px;}
-.unlock-bar{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);width:90%;max-width:390px;padding:16px;background:#00c853;border-radius:30px;text-align:center;font-size:18px;font-weight:bold;z-index:999;cursor:pointer;}
+.btn{width:90%;margin:10px 5%;padding:12px;border:none;border-radius:12px;background:linear-gradient(90deg,#3b82f6,#a855f7);color:white;font-size:14px;font-weight:500;cursor:pointer;}
+.unlock-bar{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);width:90%;max-width:390px;padding:16px;background:#00c853;border-radius:30px;text-align:center;font-size:18px;font-weight:bold;z-index:999;cursor:pointer;box-shadow:0 8px 20px rgba(0,200,83,0.3);}
 .chat-page{display:none;min-height:100vh;background:#101827;}
 .chat-header{display:flex;align-items:center;gap:12px;padding:15px;border-bottom:1px solid #334155;}
-.back{background:none;border:none;color:white;font-size:25px;}
-.avatar{width:45px;height:45px;border-radius:50%;object-fit:cover;}
+.back{background:none;border:none;color:white;font-size:25px;cursor:pointer;}
+.avatar{width:45px;height:45px;border-radius:50%;object-fit:cover;background:#1e293b;}
 .chat-name{font-size:18px;font-weight:bold;}
 .messages{padding:20px;min-height:70vh;}
-.msg{background:#273449;padding:14px;border-radius:18px;margin-bottom:15px;font-size:14px;}
-.chat-bottom{position:fixed;bottom:20px;width:100%;max-width:430px;padding:0 20px;}
+.msg{background:#273449;padding:14px;border-radius:18px;margin-bottom:15px;font-size:14px;line-height:1.5;}
+.chat-bottom{position:fixed;bottom:20px;width:100%;max-width:430px;padding:0 20px;left:50%;transform:translateX(-50%);}
 .chat-bottom button{width:100%;padding:16px;border:none;border-radius:30px;background:#00c853;color:white;font-size:18px;font-weight:bold;cursor:pointer;}
 .footer{padding:30px 20px 90px;font-size:12px;line-height:1.8;color:#94a3b8;}
 .footer-title{text-align:center;font-size:14px;color:#cbd5e1;}
@@ -63,7 +63,7 @@ body{margin:0;background:#050914;font-family:"Noto Sans TC","Microsoft JhengHei"
   <div id="home">
     <div class="header">
       <h2>配對成功（已認證）</h2>
-      <div class="timer">04:38</div>
+      <div class="timer" id="timer">04:38</div>
     </div>
     <div class="container" id="userList"></div>
     <div class="unlock-bar" onclick="unlockInfo()">🔓 解鎖查看更多資訊</div>
@@ -72,6 +72,7 @@ body{margin:0;background:#050914;font-family:"Noto Sans TC","Microsoft JhengHei"
       <div class="footer-line"></div>
       <p>【合規聲明】本平台僅提供配對與約會服務，所有用戶資料均依規定進行驗證與審核。平台禁止任何違法、詐欺、騷擾或不當行為。</p>
       <p>為保障使用者安全，平台建立相關防護措施。如發現違規內容，請立即聯絡客服。</p>
+      <p style="text-align:center;margin-top:12px;opacity:0.6;">© 2026 taiwanline.lol All Rights Reserved.</p>
       <div class="footer-links">
         <a href="#">隱私權政策</a><span>|</span>
         <a href="#">服務條款</a><span>|</span>
@@ -123,7 +124,7 @@ users.forEach((user, index) => {
   card.className = "card";
   card.innerHTML = `
     <div class="online-tag">現在可約</div>
-    <img src="${user.img}">
+    <img src="${user.img}" loading="lazy" onerror="this.style.background='#1e293b';this.src='data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'">
     <div class="info">
       <div class="name">${user.name}</div>
       <div class="location">📍${user.distance}</div>
@@ -132,12 +133,16 @@ users.forEach((user, index) => {
     <button class="btn">查看資料</button>
   `;
   card.onclick = () => {
-    if (typeof fbq !== 'undefined') {
+    try {
       fbq('track', 'ViewContent', {
         content_name: user.name,
-        content_category: 'profile_view'
+        content_type: 'product',
+        content_ids: ['profile_' + index],
+        content_category: 'profile_view',
+        value: 1,
+        currency: 'TWD'
       });
-    }
+    } catch(e){}
     openChat(index);
   };
   list.appendChild(card);
@@ -154,9 +159,10 @@ function openChat(index) {
   user.messages.forEach(text => {
     let div = document.createElement("div");
     div.className = "msg";
-    div.innerHTML = text;
+    div.textContent = text;
     box.appendChild(div);
   });
+  window.scrollTo(0,0);
 }
 
 function backHome() {
@@ -165,36 +171,36 @@ function backHome() {
 }
 
 function unlockInfo() {
-  if (typeof fbq !== 'undefined') {
-    fbq('track', 'Lead', { content_name: 'unlock_more_info' });
-    fbq('track', 'Contact');
-  }
+  try {
+    fbq('track', 'Lead', {
+      content_name: 'unlock_more_info',
+      content_category: 'line_unlock',
+      value: 10,
+      currency: 'TWD'
+    });
+    fbq('track', 'Contact', {
+      content_category: 'line_click'
+    });
+  } catch(e){}
   setTimeout(function() {
     goLine();
-  }, 300);
+  }, 350);
 }
 
 function goLine() {
   let url = linePool[lineIndex];
-  lineIndex++;
-  if (lineIndex >= linePool.length) {
-    lineIndex = 0;
-  }
+  lineIndex = (lineIndex + 1) % linePool.length;
   window.location.href = url;
 }
 
-// 倒數計時
+// 倒數計時 - 已修復補零
 let seconds = 278;
+const timerEl = document.getElementById("timer");
 setInterval(() => {
-  if (seconds > 0) {
-    seconds--;
-  }
+  if (seconds > 0) seconds--;
   let m = Math.floor(seconds / 60);
   let s = seconds % 60;
-  if (s < 10) {
-    s = "0" + s;
-  }
-  document.querySelector(".timer").innerHTML = m + ":" + s;
+  timerEl.textContent = (m < 10? "0" + m : m) + ":" + (s < 10? "0" + s : s);
 }, 1000);
 </script>
 </body>

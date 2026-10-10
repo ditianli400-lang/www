@@ -335,7 +335,7 @@ function createCard(v) {
   const cover = v.cover || "";
   return '<article class="card" data-id="' + v.id + '">' +
     '<div class="cover">' +
-      (cover ? '<img src="' + cover + '" alt="' + title + '" loading="lazy" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'grid\'"><div class="cover-placeholder" style="display:none">无封面</div>' : '<div class="cover-placeholder">无封面</div>') +
+      (cover ? '<img src="' + cover + '" alt="' + title + '" loading="lazy" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'grid\'"><div class="cover-placeholder" style="display:none">v000.webp</div>' : '<div class="cover-placeholder">无封面</div>') +
       (v.live ? '<div class="live-badge"><div class="live-dot"></div>LIVE</div>' : '') +
       '<div class="duration">' + (v.duration || '') + '</div>' +
     '</div>' +

@@ -1,17 +1,887 @@
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="refresh" content="0;url=/public/index.html">
-  <title>WQJ 视频平台</title>
-  <script>
-    window.location.replace("/public/index.html");
-  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#101114" />
+  <meta name="description" content="在线视频、直播与 AI 视频展示平台" />
+  <title>VIDEO STUDIO</title>
+
+  <style>
+    :root {
+      --bg: #101114;
+      --panel: #191a20;
+      --panel-hover: #22242c;
+      --text: #f5f5f7;
+      --muted: #9699a6;
+      --accent: #a78bfa;
+      --border: #30313a;
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", "Microsoft YaHei", sans-serif;
+    }
+
+    button, input { font: inherit; }
+
+    button { cursor: pointer; }
+
+    a { color: inherit; text-decoration: none; }
+
+    .container {
+      width: min(1440px, 100%);
+      margin: auto;
+      padding: 0 28px;
+    }
+
+    header {
+      border-bottom: 1px solid var(--border);
+      background: rgba(16,17,20,.92);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(18px);
+    }
+
+    .nav {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .logo {
+      font-size: 21px;
+      font-weight: 850;
+      letter-spacing: 1.5px;
+    }
+
+    .logo span { color: var(--accent); }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .lang-btn, .outline-btn {
+      color: var(--text);
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 14px;
+    }
+
+    .hero {
+      padding: 64px 0 36px;
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      font-size: 12px;
+      font-weight: 750;
+    }
+
+    h1 {
+      font-size: clamp(36px, 5vw, 66px);
+      line-height: 1.08;
+      margin: 18px 0;
+      letter-spacing: -2px;
+    }
+
+    .hero p {
+      color: var(--muted);
+      line-height: 1.8;
+      max-width: 620px;
+    }
+
+    .hero-panel {
+      min-height: 190px;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 26px;
+      background:
+        radial-gradient(ellipse at 80% 20%, #6550a944, transparent 55%),
+        var(--panel);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .hero-panel .big {
+      font-size: 44px;
+      font-weight: 850;
+      letter-spacing: -2px;
+    }
+
+    .hero-panel .small {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin: 24px 0 30px;
+    }
+
+    .search {
+      width: 100%;
+      min-width: 0;
+      background: var(--panel);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      outline: none;
+    }
+
+    .search:focus { border-color: var(--accent); }
+
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-bottom: 32px;
+    }
+
+    .tab {
+      border: 1px solid var(--border);
+      color: var(--muted);
+      background: var(--panel);
+      padding: 10px 16px;
+      border-radius: 999px;
+    }
+
+    .tab.active {
+      color: #17131f;
+      background: var(--accent);
+      border-color: var(--accent);
+      font-weight: 750;
+    }
+
+    .section { margin: 0 0 48px; }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .section-head h2 {
+      font-size: 23px;
+      margin: 0 0 7px;
+    }
+
+    .section-head p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .count {
+      color: var(--muted);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      overflow: hidden;
+      min-width: 0;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--panel);
+      transition: transform .2s, border-color .2s, background .2s;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: #65578c;
+      background: var(--panel-hover);
+    }
+
+    .cover {
+      aspect-ratio: 16 / 10;
+      background: #24242c;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cover img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .3s;
+    }
+
+    .card:hover .cover img { transform: scale(1.04); }
+
+    .cover-placeholder {
+      width: 100%;
+      height: 100%;
+      display: grid;
+      place-items: center;
+      color: #77798a;
+      font-size: 14px;
+      background: linear-gradient(135deg, #252631, #15161c);
+    }
+
+    .tag {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: rgba(12,12,16,.82);
+      border: 1px solid #ffffff25;
+      border-radius: 7px;
+      padding: 6px 9px;
+      font-size: 11px;
+      font-weight: 750;
+    }
+
+    .play-icon {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%,-50%);
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      background: #111114bb;
+      border: 1px solid #ffffff70;
+      border-radius: 50%;
+      font-size: 18px;
+    }
+
+    .card-body { padding: 16px; }
+
+    .card h3 {
+      margin: 0 0 9px;
+      font-size: 16px;
+      line-height: 1.45;
+      overflow-wrap: anywhere;
+    }
+
+    .description {
+      min-height: 42px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.65;
+      margin: 0 0 16px;
+      white-space: pre-line;
+      overflow-wrap: anywhere;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      border-top: 1px solid var(--border);
+      padding-top: 13px;
+    }
+
+    .type-label {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .action-btn {
+      border: 0;
+      border-radius: 9px;
+      padding: 9px 12px;
+      color: #17131f;
+      background: var(--accent);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .action-btn:hover { filter: brightness(1.08); }
+
+    .empty {
+      display: none;
+      padding: 50px 20px;
+      color: var(--muted);
+      text-align: center;
+      border: 1px dashed var(--border);
+      border-radius: var(--radius);
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 30px 0;
+      margin-top: 60px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.8;
+    }
+
+    /* Video player dialog */
+    dialog {
+      width: min(900px, calc(100% - 28px));
+      max-height: 90vh;
+      padding: 0;
+      color: var(--text);
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+    }
+
+    dialog::backdrop {
+      background: rgba(0,0,0,.8);
+      backdrop-filter: blur(5px);
+    }
+
+    .player-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 20px;
+      gap: 12px;
+    }
+
+    .player-top h3 {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    .close-btn {
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text);
+      padding: 7px 12px;
+      border-radius: 8px;
+    }
+
+    .player-video {
+      display: block;
+      width: 100%;
+      max-height: 65vh;
+      background: #000;
+    }
+
+    .player-description {
+      padding: 16px 20px 22px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.8;
+      white-space: pre-line;
+    }
+
+    @media (max-width: 1100px) {
+      .grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
+    }
+
+    @media (max-width: 760px) {
+      .container { padding: 0 16px; }
+      .hero { grid-template-columns: 1fr; padding-top: 42px; }
+      .hero-panel { min-height: 150px; }
+      .grid { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px; }
+      .toolbar { margin-top: 18px; }
+      .card-body { padding: 12px; }
+      .card h3 { font-size: 14px; }
+      .description { font-size: 12px; }
+      .section-head h2 { font-size: 20px; }
+    }
+
+    @media (max-width: 420px) {
+      .logo { font-size: 17px; }
+      .lang-btn { padding: 9px 10px; }
+      .grid { gap: 9px; }
+      .action-btn { padding: 8px 9px; }
+      .tag { top: 7px; left: 7px; }
+    }
+  </style>
 </head>
+
 <body>
-  <p>正在进入 WQJ 视频平台……</p>
-  <p><a href="/public/index.html">如果没有自动跳转，请点击这里</a></p>
+  <header>
+    <div class="container nav">
+      <a class="logo" href="#">VIDEO<span>.</span>STUDIO</a>
+      <div class="nav-right">
+        <button class="outline-btn" id="downloadAll" type="button"
+          data-i18n="downloadAll">下载中心</button>
+        <button class="lang-btn" id="langBtn" type="button">EN / 中文</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div>
+        <div class="eyebrow" data-i18n="eyebrow">YOUR VIDEO LIBRARY</div>
+        <h1 data-i18n="heroTitle">探索视频的<br />更多可能。</h1>
+        <p data-i18n="heroText">
+          在线视频、直播内容与 AI 创作视频，统一整理与展示。
+          上传你的封面和视频文件，即可开始建立自己的视频库。
+        </p>
+      </div>
+      <div class="hero-panel">
+        <div class="small" data-i18n="collection">VIDEO COLLECTION / 视频收藏</div>
+        <div class="big" id="totalCount">000</div>
+        <div class="small" data-i18n="totalVideos">VIDEOS IN YOUR LIBRARY</div>
+      </div>
+    </section>
+
+    <div class="toolbar">
+      <input class="search" id="searchInput" type="search"
+        placeholder="搜索视频名称、介绍……"
+        aria-label="Search videos" />
+    </div>
+
+    <nav class="tabs" id="tabs">
+      <button class="tab active" data-category="all" data-i18n="all">全部视频</button>
+      <button class="tab" data-category="online" data-i18n="online">在线视频</button>
+      <button class="tab" data-category="live" data-i18n="live">直播</button>
+      <button class="tab" data-category="ai" data-i18n="ai">AI 视频</button>
+    </nav>
+
+    <div id="sections"></div>
+    <div class="empty" id="emptyState" data-i18n="empty">
+      没有找到视频。请尝试其他关键词。
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div>VIDEO.STUDIO © <span id="year"></span></div>
+      <div data-i18n="footerText">
+        请确保你上传或分享的视频、图片拥有相应使用权限。
+      </div>
+    </div>
+  </footer>
+
+  <dialog id="playerDialog">
+    <div class="player-top">
+      <h3 id="playerTitle">Video title</h3>
+      <button class="close-btn" id="closePlayer" type="button">✕</button>
+    </div>
+    <video class="player-video" id="playerVideo" controls playsinline></video>
+    <div class="player-description" id="playerDescription"></div>
+  </dialog>
+
+  <script>
+    /*
+    ============================================================
+    【只需要经常修改下面这个区域：VIDEO_LIBRARY】
+    
+    1. cover：封面图片的路径
+    2. src：视频文件的路径
+    3. title：视频标题
+    4. description：视频介绍
+    5. category：online / live / ai
+    6. downloadName：下载时显示的文件名
+
+    GitHub 文件夹示例：
+      covers/ai-cover.jpg
+      videos/ai-demo.mp4
+
+    注意：路径和文件名必须与 GitHub 中的实际名称完全一致。
+    ============================================================
+    */
+
+    const VIDEO_LIBRARY = [
+      {
+        id: "video-001",
+        category: "online",
+        title: "示例在线视频",
+        description: "【在这里填写视频介绍】\n可以写视频内容、主题、时长或其他说明。",
+        cover: "covers/video-cover.jpg",
+        src: "videos/video-demo.mp4",
+        downloadName: "video-demo.mp4"
+      },
+      {
+        id: "live-001",
+        category: "live",
+        title: "示例直播内容",
+        description: "【在这里填写直播介绍】\n可以介绍直播主题、直播时间和相关信息。",
+        cover: "covers/live-cover.jpg",
+        src: "videos/live-demo.mp4",
+        downloadName: "live-demo.mp4"
+      },
+      {
+        id: "ai-001",
+        category: "ai",
+        title: "示例 AI 视频",
+        description: "【在这里填写 AI 视频介绍】\n可以介绍创作方式、视频风格和内容。",
+        cover: "covers/ai-cover.jpg",
+        src: "videos/ai-demo.mp4",
+        downloadName: "ai-demo.mp4"
+      }
+
+      /*
+      添加新视频时，在上一个对象后面加逗号，然后复制下面模板：
+
+      ,{
+        id: "ai-002",
+        category: "ai",
+        title: "我的新 AI 视频",
+        description: "在这里写介绍。",
+        cover: "covers/my-new-cover.jpg",
+        src: "videos/my-new-video.mp4",
+        downloadName: "my-new-video.mp4"
+      }
+
+      category 可选：
+      "online" = 在线视频
+      "live"   = 直播
+      "ai"     = AI 视频
+
+      如果视频放在外部视频托管服务中，
+      src 也可以填写完整的 https:// 视频地址。
+      */
+
+    ];
+
+    /*
+    ============================================================
+    【点击卡片后的行为】
+    "play"     = 点击后打开播放器
+    "download" = 点击后下载视频（默认）
+    ============================================================
+    */
+    const CARD_CLICK_ACTION = "download";
+
+    /*
+    ============================================================
+    【预留下载 API 接口】
+    
+    暂时留空，网站可直接使用视频文件地址。
+    将来接入自己的下载服务时，可以在这里配置 API 地址。
+    
+    示例：
+    const DOWNLOAD_API_BASE = "https://your-domain.com/api";
+    
+    目前不需要 API，留空即可。
+    ============================================================
+    */
+    const DOWNLOAD_API_BASE = "";
+
+    const I18N = {
+      zh: {
+        eyebrow: "YOUR VIDEO LIBRARY",
+        heroTitle: "探索视频的<br>更多可能。",
+        heroText: "在线视频、直播内容与 AI 创作视频，统一整理与展示。上传你的封面和视频文件，即可开始建立自己的视频库。",
+        collection: "VIDEO COLLECTION / 视频收藏",
+        totalVideos: "VIDEOS IN YOUR LIBRARY",
+        downloadAll: "下载中心",
+        all: "全部视频",
+        online: "在线视频",
+        live: "直播",
+        ai: "AI 视频",
+        search: "搜索视频名称、介绍……",
+        empty: "没有找到视频。请尝试其他关键词。",
+        onlineDesc: "精选在线视频",
+        liveDesc: "直播与直播回放",
+        aiDesc: "AI 生成与创作视频",
+        play: "播放视频",
+        download: "下载视频",
+        footerText: "请确保你上传或分享的视频、图片拥有相应使用权限。",
+        noVideo: "此视频还没有设置视频地址。",
+        downloadTitle: "下载中心",
+        downloadInfo: "点击下方视频名称下载文件。",
+        openFile: "打开视频文件",
+        missingCover: "封面待上传",
+        missingVideo: "请先填写视频地址"
+      },
+      en: {
+        eyebrow: "YOUR VIDEO LIBRARY",
+        heroTitle: "Discover more<br>ways to watch.",
+        heroText: "Explore online videos, live streams, and AI creations in one place. Upload your cover images and video files to build your own library.",
+        collection: "VIDEO COLLECTION",
+        totalVideos: "VIDEOS IN YOUR LIBRARY",
+        downloadAll: "Downloads",
+        all: "All Videos",
+        online: "Online Videos",
+        live: "Live",
+        ai: "AI Videos",
+        search: "Search titles and descriptions...",
+        empty: "No videos found. Try another search.",
+        onlineDesc: "Selected online videos",
+        liveDesc: "Live streams and replays",
+        aiDesc: "AI-generated videos and creations",
+        play: "Play Video",
+        download: "Download Video",
+        footerText: "Make sure you have the rights to share uploaded videos and images.",
+        noVideo: "No video URL has been configured yet.",
+        downloadTitle: "Downloads",
+        downloadInfo: "Select a video below to download it.",
+        openFile: "Open video file",
+        missingCover: "Cover coming soon",
+        missingVideo: "Please configure the video URL"
+      }
+    };
+
+    const CATEGORY_ORDER = ["online", "live", "ai"];
+    let currentCategory = "all";
+    let currentLanguage = "zh";
+
+    const $ = (selector) => document.querySelector(selector);
+
+    const escapeHTML = (value) =>
+      String(value ?? "").replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      }[char]));
+
+    function t(key) {
+      return I18N[currentLanguage][key] || key;
+    }
+
+    function setLanguage(language) {
+      currentLanguage = language;
+      document.documentElement.lang = language === "zh" ? "zh-CN" : "en";
+
+      document.querySelectorAll("[data-i18n]").forEach((element) => {
+        const key = element.dataset.i18n;
+        if (key === "heroTitle") {
+          element.innerHTML = t(key);
+        } else {
+          element.textContent = t(key);
+        }
+      });
+
+      $("#searchInput").placeholder = t("search");
+      renderVideos();
+    }
+
+    function categoryName(category) {
+      return t(category === "online" ? "online" :
+        category === "live" ? "live" : "ai");
+    }
+
+    function categoryDescription(category) {
+      return t(category === "online" ? "onlineDesc" :
+        category === "live" ? "liveDesc" : "aiDesc");
+    }
+
+    function visibleVideos() {
+      const query = $("#searchInput").value.trim().toLowerCase();
+
+      return VIDEO_LIBRARY.filter((video) => {
+        const categoryMatch =
+          currentCategory === "all" || video.category === currentCategory;
+
+        const text = [
+          video.title,
+          video.description,
+          video.category
+        ].join(" ").toLowerCase();
+
+        return categoryMatch && text.includes(query);
+      });
+    }
+
+    function createCard(video) {
+      const title = escapeHTML(video.title);
+      const description = escapeHTML(video.description);
+      const cover = escapeHTML(video.cover || "");
+      const category = escapeHTML(video.category);
+      const actionLabel = CARD_CLICK_ACTION === "play" ? t("play") : t("download");
+
+      return `
+        <article class="card">
+          <div class="cover">
+            ${
+              cover
+                ? `<img src="${cover}" alt="${title}" loading="lazy"
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';">
+                   <div class="cover-placeholder" style="display:none">${escapeHTML(t("missingCover"))}</div>`
+                : `<div class="cover-placeholder">${escapeHTML(t("missingCover"))}</div>`
+            }
+            <span class="tag">${escapeHTML(categoryName(video.category))}</span>
+            <span class="play-icon" aria-hidden="true">▶</span>
+          </div>
+          <div class="card-body">
+            <h3>${title}</h3>
+            <p class="description">${description || "&nbsp;"}</p>
+            <div class="card-footer">
+              <span class="type-label">${category.toUpperCase()}</span>
+              <button class="action-btn" type="button"
+                data-action="${CARD_CLICK_ACTION}"
+                data-id="${escapeHTML(video.id)}">${escapeHTML(actionLabel)}</button>
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderVideos() {
+      const videos = visibleVideos();
+      $("#totalCount").textContent = String(VIDEO_LIBRARY.length).padStart(3, "0");
+
+      const sections = $("#sections");
+      sections.innerHTML = "";
+
+      CATEGORY_ORDER.forEach((category) => {
+        if (currentCategory !== "all" && currentCategory !== category) return;
+
+        const group = videos.filter((video) => video.category === category);
+        if (group.length === 0) return;
+
+        const section = document.createElement("section");
+        section.className = "section";
+        section.innerHTML = `
+          <div class="section-head">
+            <div>
+              <h2>${escapeHTML(categoryName(category))}</h2>
+              <p>${escapeHTML(categoryDescription(category))}</p>
+            </div>
+            <span class="count">${group.length} VIDEOS</span>
+          </div>
+          <div class="grid">${group.map(createCard).join("")}</div>
+        `;
+        sections.appendChild(section);
+      });
+
+      $("#emptyState").style.display = videos.length ? "none" : "block";
+    }
+
+    function findVideo(id) {
+      return VIDEO_LIBRARY.find((video) => video.id === id);
+    }
+
+    function getDownloadUrl(video) {
+      /*
+        默认使用 GitHub Pages 上的静态视频路径。
+        将来接入下载 API 时，可以在这里返回 API 提供的下载链接。
+      */
+      if (DOWNLOAD_API_BASE) {
+        // API 预留位置；接入时按你的后端接口格式修改。
+        // 例如：return `${DOWNLOAD_API_BASE}/download/${encodeURIComponent(video.id)}`;
+      }
+      return video.src || "";
+    }
+
+    function downloadVideo(video) {
+      const url = getDownloadUrl(video);
+
+      if (!url) {
+        alert(t("missingVideo"));
+        return;
+      }
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = video.downloadName || "";
+      link.target = "_blank";
+      link.rel = "noopener";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    }
+
+    function playVideo(video) {
+      if (!video.src) {
+        alert(t("noVideo"));
+        return;
+      }
+
+      const player = $("#playerVideo");
+      player.pause();
+      player.src = video.src;
+      player.load();
+
+      $("#playerTitle").textContent = video.title;
+      $("#playerDescription").textContent = video.description || "";
+      $("#playerDialog").showModal();
+
+      player.play().catch(() => {
+        // 某些浏览器需要用户再次点击播放按钮。
+      });
+    }
+
+    $("#sections").addEventListener("click", (event) => {
+      const button = event.target.closest("button[data-action]");
+      if (!button) return;
+
+      const video = findVideo(button.dataset.id);
+      if (!video) return;
+
+      const action = button.dataset.action;
+      if (action === "play") playVideo(video);
+      else downloadVideo(video);
+    });
+
+    $("#tabs").addEventListener("click", (event) => {
+      const button = event.target.closest("button[data-category]");
+      if (!button) return;
+
+      currentCategory = button.dataset.category;
+
+      document.querySelectorAll(".tab").forEach((tab) => {
+        tab.classList.toggle("active", tab === button);
+      });
+
+      renderVideos();
+    });
+
+    $("#searchInput").addEventListener("input", renderVideos);
+
+    $("#langBtn").addEventListener("click", () => {
+      setLanguage(currentLanguage === "zh" ? "en" : "zh");
+    });
+
+    $("#downloadAll").addEventListener("click", () => {
+      currentCategory = "all";
+      $("#searchInput").value = "";
+
+      document.querySelectorAll(".tab").forEach((tab) => {
+        tab.classList.toggle("active", tab.dataset.category === "all");
+      });
+
+      renderVideos();
+
+      $("#sections").scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    $("#closePlayer").addEventListener("click", () => {
+      $("#playerDialog").close();
+    });
+
+    $("#playerDialog").addEventListener("close", () => {
+      const player = $("#playerVideo");
+      player.pause();
+      player.removeAttribute("src");
+      player.load();
+    });
+
+    $("#playerDialog").addEventListener("click", (event) => {
+      if (event.target === $("#playerDialog")) {
+        $("#playerDialog").close();
+      }
+    });
+
+    $("#year").textContent = new Date().getFullYear();
+    renderVideos();
+  </script>
 </body>
 </html>

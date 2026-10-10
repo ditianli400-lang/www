@@ -1,0 +1,16 @@
+{
+  "name": "wqj-video-platform",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Self-hosted video catalog with admin uploads, streaming and downloads",
+  "main": "server.js",
+  "scripts": { "start": "node server.js", "dev": "node --watch server.js" },
+  "engines": { "node": ">=20" },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "express": "^5.1.0",
+    "express-session": "^1.18.2",
+    "helmet": "^8.1.0",
+    "multer": "^2.0.2"
+  }
+}

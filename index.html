@@ -1,887 +1,212 @@
-
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#101114" />
-  <meta name="description" content="在线视频、直播与 AI 视频展示平台" />
-  <title>VIDEO STUDIO</title>
-
-  <style>
-    :root {
-      --bg: #101114;
-      --panel: #191a20;
-      --panel-hover: #22242c;
-      --text: #f5f5f7;
-      --muted: #9699a6;
-      --accent: #a78bfa;
-      --border: #30313a;
-      --radius: 16px;
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--text);
-      font-family: Inter, -apple-system, BlinkMacSystemFont,
-        "Segoe UI", "Microsoft YaHei", sans-serif;
-    }
-
-    button, input { font: inherit; }
-
-    button { cursor: pointer; }
-
-    a { color: inherit; text-decoration: none; }
-
-    .container {
-      width: min(1440px, 100%);
-      margin: auto;
-      padding: 0 28px;
-    }
-
-    header {
-      border-bottom: 1px solid var(--border);
-      background: rgba(16,17,20,.92);
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      backdrop-filter: blur(18px);
-    }
-
-    .nav {
-      min-height: 76px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-    }
-
-    .logo {
-      font-size: 21px;
-      font-weight: 850;
-      letter-spacing: 1.5px;
-    }
-
-    .logo span { color: var(--accent); }
-
-    .nav-right {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .lang-btn, .outline-btn {
-      color: var(--text);
-      background: transparent;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 10px 14px;
-    }
-
-    .hero {
-      padding: 64px 0 36px;
-      display: grid;
-      grid-template-columns: 1.5fr 1fr;
-      align-items: center;
-      gap: 28px;
-    }
-
-    .eyebrow {
-      color: var(--accent);
-      text-transform: uppercase;
-      letter-spacing: 3px;
-      font-size: 12px;
-      font-weight: 750;
-    }
-
-    h1 {
-      font-size: clamp(36px, 5vw, 66px);
-      line-height: 1.08;
-      margin: 18px 0;
-      letter-spacing: -2px;
-    }
-
-    .hero p {
-      color: var(--muted);
-      line-height: 1.8;
-      max-width: 620px;
-    }
-
-    .hero-panel {
-      min-height: 190px;
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      padding: 26px;
-      background:
-        radial-gradient(ellipse at 80% 20%, #6550a944, transparent 55%),
-        var(--panel);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-
-    .hero-panel .big {
-      font-size: 44px;
-      font-weight: 850;
-      letter-spacing: -2px;
-    }
-
-    .hero-panel .small {
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .toolbar {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      margin: 24px 0 30px;
-    }
-
-    .search {
-      width: 100%;
-      min-width: 0;
-      background: var(--panel);
-      color: var(--text);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 14px 16px;
-      outline: none;
-    }
-
-    .search:focus { border-color: var(--accent); }
-
-    .tabs {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 9px;
-      margin-bottom: 32px;
-    }
-
-    .tab {
-      border: 1px solid var(--border);
-      color: var(--muted);
-      background: var(--panel);
-      padding: 10px 16px;
-      border-radius: 999px;
-    }
-
-    .tab.active {
-      color: #17131f;
-      background: var(--accent);
-      border-color: var(--accent);
-      font-weight: 750;
-    }
-
-    .section { margin: 0 0 48px; }
-
-    .section-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: end;
-      gap: 16px;
-      margin-bottom: 18px;
-    }
-
-    .section-head h2 {
-      font-size: 23px;
-      margin: 0 0 7px;
-    }
-
-    .section-head p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .count {
-      color: var(--muted);
-      font-size: 13px;
-      white-space: nowrap;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 18px;
-    }
-
-    .card {
-      overflow: hidden;
-      min-width: 0;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      background: var(--panel);
-      transition: transform .2s, border-color .2s, background .2s;
-    }
-
-    .card:hover {
-      transform: translateY(-4px);
-      border-color: #65578c;
-      background: var(--panel-hover);
-    }
-
-    .cover {
-      aspect-ratio: 16 / 10;
-      background: #24242c;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .cover img {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform .3s;
-    }
-
-    .card:hover .cover img { transform: scale(1.04); }
-
-    .cover-placeholder {
-      width: 100%;
-      height: 100%;
-      display: grid;
-      place-items: center;
-      color: #77798a;
-      font-size: 14px;
-      background: linear-gradient(135deg, #252631, #15161c);
-    }
-
-    .tag {
-      position: absolute;
-      top: 12px;
-      left: 12px;
-      background: rgba(12,12,16,.82);
-      border: 1px solid #ffffff25;
-      border-radius: 7px;
-      padding: 6px 9px;
-      font-size: 11px;
-      font-weight: 750;
-    }
-
-    .play-icon {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%,-50%);
-      width: 46px;
-      height: 46px;
-      display: grid;
-      place-items: center;
-      background: #111114bb;
-      border: 1px solid #ffffff70;
-      border-radius: 50%;
-      font-size: 18px;
-    }
-
-    .card-body { padding: 16px; }
-
-    .card h3 {
-      margin: 0 0 9px;
-      font-size: 16px;
-      line-height: 1.45;
-      overflow-wrap: anywhere;
-    }
-
-    .description {
-      min-height: 42px;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.65;
-      margin: 0 0 16px;
-      white-space: pre-line;
-      overflow-wrap: anywhere;
-    }
-
-    .card-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      border-top: 1px solid var(--border);
-      padding-top: 13px;
-    }
-
-    .type-label {
-      color: var(--muted);
-      font-size: 11px;
-    }
-
-    .action-btn {
-      border: 0;
-      border-radius: 9px;
-      padding: 9px 12px;
-      color: #17131f;
-      background: var(--accent);
-      font-size: 12px;
-      font-weight: 800;
-    }
-
-    .action-btn:hover { filter: brightness(1.08); }
-
-    .empty {
-      display: none;
-      padding: 50px 20px;
-      color: var(--muted);
-      text-align: center;
-      border: 1px dashed var(--border);
-      border-radius: var(--radius);
-    }
-
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 30px 0;
-      margin-top: 60px;
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.8;
-    }
-
-    /* Video player dialog */
-    dialog {
-      width: min(900px, calc(100% - 28px));
-      max-height: 90vh;
-      padding: 0;
-      color: var(--text);
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-    }
-
-    dialog::backdrop {
-      background: rgba(0,0,0,.8);
-      backdrop-filter: blur(5px);
-    }
-
-    .player-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16px 20px;
-      gap: 12px;
-    }
-
-    .player-top h3 {
-      margin: 0;
-      font-size: 16px;
-    }
-
-    .close-btn {
-      border: 1px solid var(--border);
-      background: transparent;
-      color: var(--text);
-      padding: 7px 12px;
-      border-radius: 8px;
-    }
-
-    .player-video {
-      display: block;
-      width: 100%;
-      max-height: 65vh;
-      background: #000;
-    }
-
-    .player-description {
-      padding: 16px 20px 22px;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.8;
-      white-space: pre-line;
-    }
-
-    @media (max-width: 1100px) {
-      .grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
-    }
-
-    @media (max-width: 760px) {
-      .container { padding: 0 16px; }
-      .hero { grid-template-columns: 1fr; padding-top: 42px; }
-      .hero-panel { min-height: 150px; }
-      .grid { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px; }
-      .toolbar { margin-top: 18px; }
-      .card-body { padding: 12px; }
-      .card h3 { font-size: 14px; }
-      .description { font-size: 12px; }
-      .section-head h2 { font-size: 20px; }
-    }
-
-    @media (max-width: 420px) {
-      .logo { font-size: 17px; }
-      .lang-btn { padding: 9px 10px; }
-      .grid { gap: 9px; }
-      .action-btn { padding: 8px 9px; }
-      .tag { top: 7px; left: 7px; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101114">
+<meta name="description" content="Online videos, live streams and AI video collection.">
+<title>VIDEO.STUDIO</title>
+<style>
+:root{--bg:#101114;--panel:#191a20;--hover:#22242c;--text:#f5f5f7;--muted:#9699a6;--accent:#a78bfa;--border:#30313a;--radius:16px}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Arial,sans-serif}button,input,select{font:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none}.container{width:min(1440px,100%);margin:auto;padding:0 28px}
+header{border-bottom:1px solid var(--border);background:rgba(16,17,20,.93);position:sticky;top:0;z-index:10;backdrop-filter:blur(18px)}.nav{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:18px}.logo{font-size:21px;font-weight:850;letter-spacing:1.5px}.logo span{color:var(--accent)}.nav-right{display:flex;align-items:center;gap:10px}.lang-select,.outline-btn{color:var(--text);background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:10px 12px;max-width:190px}
+.hero{padding:64px 0 36px;display:grid;grid-template-columns:1.5fr 1fr;align-items:center;gap:28px}.eyebrow{color:var(--accent);text-transform:uppercase;letter-spacing:3px;font-size:12px;font-weight:750}h1{font-size:clamp(36px,5vw,66px);line-height:1.08;margin:18px 0;letter-spacing:-2px}.hero p{color:var(--muted);line-height:1.8;max-width:620px}.hero-panel{min-height:190px;border:1px solid var(--border);border-radius:22px;padding:26px;background:radial-gradient(ellipse at 80% 20%,#6550a944,transparent 55%),var(--panel);display:flex;flex-direction:column;justify-content:space-between}.hero-panel .big{font-size:44px;font-weight:850;letter-spacing:-2px}.small{color:var(--muted);font-size:13px}.toolbar{display:flex;gap:12px;align-items:center;margin:24px 0 30px}.search{width:100%;min-width:0;background:var(--panel);color:var(--text);border:1px solid var(--border);border-radius:12px;padding:14px 16px;outline:none}.search:focus{border-color:var(--accent)}.tabs{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:32px}.tab{border:1px solid var(--border);color:var(--muted);background:var(--panel);padding:10px 16px;border-radius:999px}.tab.active{color:#17131f;background:var(--accent);border-color:var(--accent);font-weight:750}
+.section{margin:0 0 48px}.section-head{display:flex;justify-content:space-between;align-items:end;gap:16px;margin-bottom:18px}.section-head h2{font-size:23px;margin:0 0 7px}.section-head p{margin:0;color:var(--muted);font-size:13px}.count{color:var(--muted);font-size:13px;white-space:nowrap}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}.card{overflow:hidden;min-width:0;border:1px solid var(--border);border-radius:var(--radius);background:var(--panel);transition:transform .2s,border-color .2s,background .2s}.card:hover{transform:translateY(-4px);border-color:#65578c;background:var(--hover)}.cover{aspect-ratio:16/10;background:#24242c;position:relative;overflow:hidden}.cover img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .3s}.card:hover .cover img{transform:scale(1.04)}.cover-placeholder{width:100%;height:100%;display:grid;place-items:center;color:#a4a5b2;font-size:14px;background:linear-gradient(135deg,#252631,#15161c)}.tag{position:absolute;top:12px;inset-inline-start:12px;background:#0c0c10d9;border:1px solid #ffffff25;border-radius:7px;padding:6px 9px;font-size:11px;font-weight:750}.play-icon{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:46px;height:46px;display:grid;place-items:center;background:#111114bb;border:1px solid #ffffff70;border-radius:50%;font-size:18px;pointer-events:none}.card-body{padding:16px}.card h3{margin:0 0 9px;font-size:16px;line-height:1.45;overflow-wrap:anywhere}.description{min-height:42px;color:var(--muted);font-size:13px;line-height:1.65;margin:0 0 16px;white-space:pre-line;overflow-wrap:anywhere}.card-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;border-top:1px solid var(--border);padding-top:13px}.type-label{color:var(--muted);font-size:11px}.action-btn{border:0;border-radius:9px;padding:9px 12px;color:#17131f;background:var(--accent);font-size:12px;font-weight:800}.action-btn:hover{filter:brightness(1.08)}.empty{display:none;padding:50px 20px;color:var(--muted);text-align:center;border:1px dashed var(--border);border-radius:var(--radius)}footer{border-top:1px solid var(--border);padding:30px 0;margin-top:60px;color:var(--muted);font-size:12px;line-height:1.8}
+dialog{width:min(900px,calc(100% - 28px));max-height:90vh;padding:0;color:var(--text);background:var(--panel);border:1px solid var(--border);border-radius:18px}dialog::backdrop{background:#000c;backdrop-filter:blur(5px)}.player-top{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;gap:12px}.player-top h3{margin:0;font-size:16px}.close-btn{border:1px solid var(--border);background:transparent;color:var(--text);padding:7px 12px;border-radius:8px}.player-video{display:block;width:100%;max-height:65vh;background:#000}.player-description{padding:16px 20px 22px;color:var(--muted);font-size:14px;line-height:1.8;white-space:pre-line}.download-list{padding:0 20px 22px;display:grid;gap:10px}.download-item{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px;border:1px solid var(--border);border-radius:10px}.download-item a{color:var(--accent);font-weight:700}
+[dir=rtl] h1{letter-spacing:0}[dir=rtl] .logo{letter-spacing:0}
+@media(max-width:1100px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:760px){.container{padding:0 16px}.hero{grid-template-columns:1fr;padding-top:42px}.hero-panel{min-height:150px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.toolbar{margin-top:18px}.card-body{padding:12px}.card h3{font-size:14px}.description{font-size:12px}.section-head h2{font-size:20px}.nav{min-height:68px}.logo{font-size:17px}.lang-select{max-width:145px;font-size:12px;padding:9px 7px}}@media(max-width:420px){.grid{gap:9px}.action-btn{padding:8px 9px}.tag{top:7px;inset-inline-start:7px}.hero-panel .big{font-size:36px}}
+</style>
 </head>
-
 <body>
-  <header>
-    <div class="container nav">
-      <a class="logo" href="#">VIDEO<span>.</span>STUDIO</a>
-      <div class="nav-right">
-        <button class="outline-btn" id="downloadAll" type="button"
-          data-i18n="downloadAll">下载中心</button>
-        <button class="lang-btn" id="langBtn" type="button">EN / 中文</button>
-      </div>
-    </div>
-  </header>
-
-  <main class="container">
-    <section class="hero">
-      <div>
-        <div class="eyebrow" data-i18n="eyebrow">YOUR VIDEO LIBRARY</div>
-        <h1 data-i18n="heroTitle">探索视频的<br />更多可能。</h1>
-        <p data-i18n="heroText">
-          在线视频、直播内容与 AI 创作视频，统一整理与展示。
-          上传你的封面和视频文件，即可开始建立自己的视频库。
-        </p>
-      </div>
-      <div class="hero-panel">
-        <div class="small" data-i18n="collection">VIDEO COLLECTION / 视频收藏</div>
-        <div class="big" id="totalCount">000</div>
-        <div class="small" data-i18n="totalVideos">VIDEOS IN YOUR LIBRARY</div>
-      </div>
-    </section>
-
-    <div class="toolbar">
-      <input class="search" id="searchInput" type="search"
-        placeholder="搜索视频名称、介绍……"
-        aria-label="Search videos" />
-    </div>
-
-    <nav class="tabs" id="tabs">
-      <button class="tab active" data-category="all" data-i18n="all">全部视频</button>
-      <button class="tab" data-category="online" data-i18n="online">在线视频</button>
-      <button class="tab" data-category="live" data-i18n="live">直播</button>
-      <button class="tab" data-category="ai" data-i18n="ai">AI 视频</button>
-    </nav>
-
-    <div id="sections"></div>
-    <div class="empty" id="emptyState" data-i18n="empty">
-      没有找到视频。请尝试其他关键词。
-    </div>
-  </main>
-
-  <footer>
-    <div class="container">
-      <div>VIDEO.STUDIO © <span id="year"></span></div>
-      <div data-i18n="footerText">
-        请确保你上传或分享的视频、图片拥有相应使用权限。
-      </div>
-    </div>
-  </footer>
-
-  <dialog id="playerDialog">
-    <div class="player-top">
-      <h3 id="playerTitle">Video title</h3>
-      <button class="close-btn" id="closePlayer" type="button">✕</button>
-    </div>
-    <video class="player-video" id="playerVideo" controls playsinline></video>
-    <div class="player-description" id="playerDescription"></div>
-  </dialog>
-
-  <script>
-    /*
-    ============================================================
-    【只需要经常修改下面这个区域：VIDEO_LIBRARY】
-    
-    1. cover：封面图片的路径
-    2. src：视频文件的路径
-    3. title：视频标题
-    4. description：视频介绍
-    5. category：online / live / ai
-    6. downloadName：下载时显示的文件名
-
-    GitHub 文件夹示例：
-      covers/ai-cover.jpg
-      videos/ai-demo.mp4
-
-    注意：路径和文件名必须与 GitHub 中的实际名称完全一致。
-    ============================================================
-    */
-
-    const VIDEO_LIBRARY = [
-      {
-        id: "video-001",
-        category: "online",
-        title: "示例在线视频",
-        description: "【在这里填写视频介绍】\n可以写视频内容、主题、时长或其他说明。",
-        cover: "covers/video-cover.jpg",
-        src: "videos/video-demo.mp4",
-        downloadName: "video-demo.mp4"
-      },
-      {
-        id: "live-001",
-        category: "live",
-        title: "示例直播内容",
-        description: "【在这里填写直播介绍】\n可以介绍直播主题、直播时间和相关信息。",
-        cover: "covers/live-cover.jpg",
-        src: "videos/live-demo.mp4",
-        downloadName: "live-demo.mp4"
-      },
-      {
-        id: "ai-001",
-        category: "ai",
-        title: "示例 AI 视频",
-        description: "【在这里填写 AI 视频介绍】\n可以介绍创作方式、视频风格和内容。",
-        cover: "covers/ai-cover.jpg",
-        src: "videos/ai-demo.mp4",
-        downloadName: "ai-demo.mp4"
-      }
-
-      /*
-      添加新视频时，在上一个对象后面加逗号，然后复制下面模板：
-
-      ,{
-        id: "ai-002",
-        category: "ai",
-        title: "我的新 AI 视频",
-        description: "在这里写介绍。",
-        cover: "covers/my-new-cover.jpg",
-        src: "videos/my-new-video.mp4",
-        downloadName: "my-new-video.mp4"
-      }
-
-      category 可选：
-      "online" = 在线视频
-      "live"   = 直播
-      "ai"     = AI 视频
-
-      如果视频放在外部视频托管服务中，
-      src 也可以填写完整的 https:// 视频地址。
-      */
-
-    ];
-
-    /*
-    ============================================================
-    【点击卡片后的行为】
-    "play"     = 点击后打开播放器
-    "download" = 点击后下载视频（默认）
-    ============================================================
-    */
-    const CARD_CLICK_ACTION = "download";
-
-    /*
-    ============================================================
-    【预留下载 API 接口】
-    
-    暂时留空，网站可直接使用视频文件地址。
-    将来接入自己的下载服务时，可以在这里配置 API 地址。
-    
-    示例：
-    const DOWNLOAD_API_BASE = "https://your-domain.com/api";
-    
-    目前不需要 API，留空即可。
-    ============================================================
-    */
-    const DOWNLOAD_API_BASE = "";
-
-    const I18N = {
-      zh: {
-        eyebrow: "YOUR VIDEO LIBRARY",
-        heroTitle: "探索视频的<br>更多可能。",
-        heroText: "在线视频、直播内容与 AI 创作视频，统一整理与展示。上传你的封面和视频文件，即可开始建立自己的视频库。",
-        collection: "VIDEO COLLECTION / 视频收藏",
-        totalVideos: "VIDEOS IN YOUR LIBRARY",
-        downloadAll: "下载中心",
-        all: "全部视频",
-        online: "在线视频",
-        live: "直播",
-        ai: "AI 视频",
-        search: "搜索视频名称、介绍……",
-        empty: "没有找到视频。请尝试其他关键词。",
-        onlineDesc: "精选在线视频",
-        liveDesc: "直播与直播回放",
-        aiDesc: "AI 生成与创作视频",
-        play: "播放视频",
-        download: "下载视频",
-        footerText: "请确保你上传或分享的视频、图片拥有相应使用权限。",
-        noVideo: "此视频还没有设置视频地址。",
-        downloadTitle: "下载中心",
-        downloadInfo: "点击下方视频名称下载文件。",
-        openFile: "打开视频文件",
-        missingCover: "封面待上传",
-        missingVideo: "请先填写视频地址"
-      },
-      en: {
-        eyebrow: "YOUR VIDEO LIBRARY",
-        heroTitle: "Discover more<br>ways to watch.",
-        heroText: "Explore online videos, live streams, and AI creations in one place. Upload your cover images and video files to build your own library.",
-        collection: "VIDEO COLLECTION",
-        totalVideos: "VIDEOS IN YOUR LIBRARY",
-        downloadAll: "Downloads",
-        all: "All Videos",
-        online: "Online Videos",
-        live: "Live",
-        ai: "AI Videos",
-        search: "Search titles and descriptions...",
-        empty: "No videos found. Try another search.",
-        onlineDesc: "Selected online videos",
-        liveDesc: "Live streams and replays",
-        aiDesc: "AI-generated videos and creations",
-        play: "Play Video",
-        download: "Download Video",
-        footerText: "Make sure you have the rights to share uploaded videos and images.",
-        noVideo: "No video URL has been configured yet.",
-        downloadTitle: "Downloads",
-        downloadInfo: "Select a video below to download it.",
-        openFile: "Open video file",
-        missingCover: "Cover coming soon",
-        missingVideo: "Please configure the video URL"
-      }
-    };
-
-    const CATEGORY_ORDER = ["online", "live", "ai"];
-    let currentCategory = "all";
-    let currentLanguage = "zh";
-
-    const $ = (selector) => document.querySelector(selector);
-
-    const escapeHTML = (value) =>
-      String(value ?? "").replace(/[&<>"']/g, (char) => ({
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#39;"
-      }[char]));
-
-    function t(key) {
-      return I18N[currentLanguage][key] || key;
-    }
-
-    function setLanguage(language) {
-      currentLanguage = language;
-      document.documentElement.lang = language === "zh" ? "zh-CN" : "en";
-
-      document.querySelectorAll("[data-i18n]").forEach((element) => {
-        const key = element.dataset.i18n;
-        if (key === "heroTitle") {
-          element.innerHTML = t(key);
-        } else {
-          element.textContent = t(key);
-        }
-      });
-
-      $("#searchInput").placeholder = t("search");
-      renderVideos();
-    }
-
-    function categoryName(category) {
-      return t(category === "online" ? "online" :
-        category === "live" ? "live" : "ai");
-    }
-
-    function categoryDescription(category) {
-      return t(category === "online" ? "onlineDesc" :
-        category === "live" ? "liveDesc" : "aiDesc");
-    }
-
-    function visibleVideos() {
-      const query = $("#searchInput").value.trim().toLowerCase();
-
-      return VIDEO_LIBRARY.filter((video) => {
-        const categoryMatch =
-          currentCategory === "all" || video.category === currentCategory;
-
-        const text = [
-          video.title,
-          video.description,
-          video.category
-        ].join(" ").toLowerCase();
-
-        return categoryMatch && text.includes(query);
-      });
-    }
-
-    function createCard(video) {
-      const title = escapeHTML(video.title);
-      const description = escapeHTML(video.description);
-      const cover = escapeHTML(video.cover || "");
-      const category = escapeHTML(video.category);
-      const actionLabel = CARD_CLICK_ACTION === "play" ? t("play") : t("download");
-
-      return `
-        <article class="card">
-          <div class="cover">
-            ${
-              cover
-                ? `<img src="${cover}" alt="${title}" loading="lazy"
-                     onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';">
-                   <div class="cover-placeholder" style="display:none">${escapeHTML(t("missingCover"))}</div>`
-                : `<div class="cover-placeholder">${escapeHTML(t("missingCover"))}</div>`
-            }
-            <span class="tag">${escapeHTML(categoryName(video.category))}</span>
-            <span class="play-icon" aria-hidden="true">▶</span>
-          </div>
-          <div class="card-body">
-            <h3>${title}</h3>
-            <p class="description">${description || "&nbsp;"}</p>
-            <div class="card-footer">
-              <span class="type-label">${category.toUpperCase()}</span>
-              <button class="action-btn" type="button"
-                data-action="${CARD_CLICK_ACTION}"
-                data-id="${escapeHTML(video.id)}">${escapeHTML(actionLabel)}</button>
-            </div>
-          </div>
-        </article>
-      `;
-    }
-
-    function renderVideos() {
-      const videos = visibleVideos();
-      $("#totalCount").textContent = String(VIDEO_LIBRARY.length).padStart(3, "0");
-
-      const sections = $("#sections");
-      sections.innerHTML = "";
-
-      CATEGORY_ORDER.forEach((category) => {
-        if (currentCategory !== "all" && currentCategory !== category) return;
-
-        const group = videos.filter((video) => video.category === category);
-        if (group.length === 0) return;
-
-        const section = document.createElement("section");
-        section.className = "section";
-        section.innerHTML = `
-          <div class="section-head">
-            <div>
-              <h2>${escapeHTML(categoryName(category))}</h2>
-              <p>${escapeHTML(categoryDescription(category))}</p>
-            </div>
-            <span class="count">${group.length} VIDEOS</span>
-          </div>
-          <div class="grid">${group.map(createCard).join("")}</div>
-        `;
-        sections.appendChild(section);
-      });
-
-      $("#emptyState").style.display = videos.length ? "none" : "block";
-    }
-
-    function findVideo(id) {
-      return VIDEO_LIBRARY.find((video) => video.id === id);
-    }
-
-    function getDownloadUrl(video) {
-      /*
-        默认使用 GitHub Pages 上的静态视频路径。
-        将来接入下载 API 时，可以在这里返回 API 提供的下载链接。
-      */
-      if (DOWNLOAD_API_BASE) {
-        // API 预留位置；接入时按你的后端接口格式修改。
-        // 例如：return `${DOWNLOAD_API_BASE}/download/${encodeURIComponent(video.id)}`;
-      }
-      return video.src || "";
-    }
-
-    function downloadVideo(video) {
-      const url = getDownloadUrl(video);
-
-      if (!url) {
-        alert(t("missingVideo"));
-        return;
-      }
-
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = video.downloadName || "";
-      link.target = "_blank";
-      link.rel = "noopener";
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-    }
-
-    function playVideo(video) {
-      if (!video.src) {
-        alert(t("noVideo"));
-        return;
-      }
-
-      const player = $("#playerVideo");
-      player.pause();
-      player.src = video.src;
-      player.load();
-
-      $("#playerTitle").textContent = video.title;
-      $("#playerDescription").textContent = video.description || "";
-      $("#playerDialog").showModal();
-
-      player.play().catch(() => {
-        // 某些浏览器需要用户再次点击播放按钮。
-      });
-    }
-
-    $("#sections").addEventListener("click", (event) => {
-      const button = event.target.closest("button[data-action]");
-      if (!button) return;
-
-      const video = findVideo(button.dataset.id);
-      if (!video) return;
-
-      const action = button.dataset.action;
-      if (action === "play") playVideo(video);
-      else downloadVideo(video);
-    });
-
-    $("#tabs").addEventListener("click", (event) => {
-      const button = event.target.closest("button[data-category]");
-      if (!button) return;
-
-      currentCategory = button.dataset.category;
-
-      document.querySelectorAll(".tab").forEach((tab) => {
-        tab.classList.toggle("active", tab === button);
-      });
-
-      renderVideos();
-    });
-
-    $("#searchInput").addEventListener("input", renderVideos);
-
-    $("#langBtn").addEventListener("click", () => {
-      setLanguage(currentLanguage === "zh" ? "en" : "zh");
-    });
-
-    $("#downloadAll").addEventListener("click", () => {
-      currentCategory = "all";
-      $("#searchInput").value = "";
-
-      document.querySelectorAll(".tab").forEach((tab) => {
-        tab.classList.toggle("active", tab.dataset.category === "all");
-      });
-
-      renderVideos();
-
-      $("#sections").scrollIntoView({ behavior: "smooth", block: "start" });
-    });
-
-    $("#closePlayer").addEventListener("click", () => {
-      $("#playerDialog").close();
-    });
-
-    $("#playerDialog").addEventListener("close", () => {
-      const player = $("#playerVideo");
-      player.pause();
-      player.removeAttribute("src");
-      player.load();
-    });
-
-    $("#playerDialog").addEventListener("click", (event) => {
-      if (event.target === $("#playerDialog")) {
-        $("#playerDialog").close();
-      }
-    });
-
-    $("#year").textContent = new Date().getFullYear();
-    renderVideos();
-  </script>
+<header><div class="container nav">
+<a class="logo" href="#">VIDEO<span>.</span>STUDIO</a>
+<div class="nav-right">
+<button class="outline-btn" id="downloadCenter" type="button" data-i18n="downloadCenter">Downloads</button>
+<select id="languageSelect" class="lang-select" aria-label="Choose language">
+<option value="auto">🌐 Auto / 自动</option>
+<option value="en">🇬🇧 English</option><option value="zh-CN">🇨🇳 简体中文</option><option value="zh-TW">🇹🇼 繁體中文</option>
+<option value="de">🇩🇪 Deutsch</option><option value="fr">🇫🇷 Français</option><option value="es">🇪🇸 Español</option><option value="pt">🇵🇹 Português</option>
+<option value="ja">🇯🇵 日本語</option><option value="ko">🇰🇷 한국어</option><option value="ar">🇸🇦 العربية</option><option value="ru">🇷🇺 Русский</option>
+<option value="hi">🇮🇳 हिन्दी</option><option value="it">🇮🇹 Italiano</option><option value="nl">🇳🇱 Nederlands</option><option value="tr">🇹🇷 Türkçe</option>
+<option value="id">🇮🇩 Bahasa Indonesia</option><option value="th">🇹🇭 ไทย</option><option value="vi">🇻🇳 Tiếng Việt</option><option value="pl">🇵🇱 Polski</option>
+<option value="sv">🇸🇪 Svenska</option><option value="el">🇬🇷 Ελληνικά</option><option value="he">🇮🇱 עברית</option>
+</select></div></div></header>
+<main class="container">
+<section class="hero"><div><div class="eyebrow" data-i18n="eyebrow">YOUR VIDEO LIBRARY</div><h1 data-i18n-html="heroTitle">Discover more<br>ways to watch.</h1><p data-i18n="heroText">Explore online videos, live streams, and AI creations in one place.</p></div>
+<div class="hero-panel"><div class="small" data-i18n="collection">VIDEO COLLECTION</div><div class="big" id="totalCount">000</div><div class="small" data-i18n="totalVideos">VIDEOS IN YOUR LIBRARY</div></div></section>
+<div class="toolbar"><input class="search" id="searchInput" type="search" placeholder="Search titles and descriptions..." aria-label="Search videos"></div>
+<nav class="tabs" id="tabs"><button class="tab active" data-category="all" data-i18n="all">All Videos</button><button class="tab" data-category="online" data-i18n="online">Online Videos</button><button class="tab" data-category="live" data-i18n="live">Live</button><button class="tab" data-category="ai" data-i18n="ai">AI Videos</button></nav>
+<div id="sections"></div><div class="empty" id="emptyState" data-i18n="empty">No videos found.</div>
+</main>
+<footer><div class="container"><div>VIDEO.STUDIO © <span id="year"></span></div><div data-i18n="footerText">Please ensure you have permission to share all media.</div></div></footer>
+<dialog id="playerDialog"><div class="player-top"><h3 id="playerTitle">Video title</h3><button class="close-btn" id="closePlayer" type="button" aria-label="Close">✕</button></div><video class="player-video" id="playerVideo" controls playsinline></video><div class="player-description" id="playerDescription"></div></dialog>
+<dialog id="downloadsDialog"><div class="player-top"><h3 data-i18n="downloadCenter">Downloads</h3><button class="close-btn" id="closeDownloads" type="button" aria-label="Close">✕</button></div><div class="player-description" data-i18n="downloadInfo">Select a video below to download it.</div><div class="download-list" id="downloadList"></div></dialog>
+<script>
+/* =========================================================
+   VIDEO LIBRARY: Edit only this list to add your own media.
+   Upload files to your GitHub repository, then set exact paths.
+   Categories: online, live, ai.
+   For full translations, add title/description keys per language.
+   ========================================================= */
+const VIDEO_LIBRARY = [
+  {id:"video-001",category:"online",title:{"en":"Sample Online Video","zh-CN":"示例在线视频","zh-TW":"示例線上影片","de":"Beispiel-Onlinevideo","fr":"Exemple de vidéo en ligne","es":"Ejemplo de vídeo en línea","pt":"Exemplo de vídeo online","ja":"オンライン動画のサンプル","ko":"온라인 동영상 예시","ru":"Пример онлайн-видео","ar":"مثال على فيديو عبر الإنترنت"},description:{"en":"Add your video description here.","zh-CN":"【在这里填写视频介绍】可以写视频主题、内容和其他说明。","zh-TW":"【在這裡填寫影片介紹】可以介紹影片主題與內容。","de":"Füge hier deine Videobeschreibung ein.","fr":"Ajoutez ici la description de la vidéo.","es":"Añade aquí la descripción del vídeo."},cover:"covers/video-cover.jpg",src:"videos/video-demo.mp4",downloadName:"video-demo.mp4"},
+  {id:"live-001",category:"live",title:{"en":"Sample Live Stream","zh-CN":"示例直播内容","zh-TW":"示例直播內容","de":"Beispiel-Livestream","fr":"Exemple de direct","es":"Ejemplo de transmisión en vivo","ja":"ライブ配信サンプル","ko":"라이브 방송 예시"},description:{"en":"Add your live stream description here.","zh-CN":"【在这里填写直播介绍】可以介绍直播主题、时间和相关信息。","zh-TW":"【在這裡填寫直播介紹】可以介紹直播主題與時間。","de":"Füge hier die Beschreibung des Livestreams ein.","fr":"Ajoutez ici la description du direct."},cover:"covers/live-cover.jpg",src:"videos/live-demo.mp4",downloadName:"live-demo.mp4"},
+  {id:"ai-001",category:"ai",title:{"en":"Sample AI Video","zh-CN":"示例 AI 视频","zh-TW":"示例 AI 影片","de":"Beispiel für ein KI-Video","fr":"Exemple de vidéo IA","es":"Ejemplo de vídeo de IA","pt":"Exemplo de vídeo de IA","ja":"AI動画のサンプル","ko":"AI 동영상 예시","ru":"Пример видео ИИ","ar":"مثال على فيديو ذكاء اصطناعي"},description:{"en":"Add your AI video description here.","zh-CN":"【在这里填写 AI 视频介绍】可以介绍创作方式、风格和内容。","zh-TW":"【在這裡填寫 AI 影片介紹】可以介紹創作方式與風格。","de":"Füge hier die Beschreibung deines KI-Videos ein.","fr":"Ajoutez ici la description de votre vidéo IA."},cover:"covers/ai-cover.jpg",src:"videos/ai-demo.mp4",downloadName:"ai-demo.mp4"}
+];
+
+/* Click behavior: "download" or "play". */
+const CARD_CLICK_ACTION = "download";
+
+/* Reserved for future download API integration; leave empty for now. */
+const DOWNLOAD_API_BASE = "";
+
+const TRANSLATIONS = {
+en:{eyebrow:"YOUR VIDEO LIBRARY",heroTitle:"Discover more<br>ways to watch.",heroText:"Explore online videos, live streams, and AI creations in one place. Browse your collection, watch videos, and download files.",collection:"VIDEO COLLECTION",totalVideos:"VIDEOS IN YOUR LIBRARY",downloadCenter:"Downloads",all:"All Videos",online:"Online Videos",live:"Live",ai:"AI Videos",search:"Search titles and descriptions...",empty:"No videos found. Try another search.",onlineDesc:"Selected online videos",liveDesc:"Live streams and replays",aiDesc:"AI-generated videos and creations",play:"Play Video",download:"Download",footerText:"Please ensure you have permission to share all media.",missingCover:"Cover coming soon",missingVideo:"Please configure the video URL",noVideo:"No video URL configured.",downloadInfo:"Select a video below to download it.",watch:"Watch",downloadFile:"Download file"},
+"zh-CN":{eyebrow:"你的视频库",heroTitle:"探索视频的<br>更多可能。",heroText:"在线视频、直播内容与 AI 创作视频，统一整理与展示。上传封面与视频文件，建立自己的视频库。",collection:"视频收藏",totalVideos:"视频总数",downloadCenter:"下载中心",all:"全部视频",online:"在线视频",live:"直播",ai:"AI 视频",search:"搜索视频名称、介绍……",empty:"没有找到视频，请尝试其他关键词。",onlineDesc:"精选在线视频",liveDesc:"直播与直播回放",aiDesc:"AI 生成与创作视频",play:"播放视频",download:"下载视频",footerText:"请确保你拥有分享这些视频和图片的权限。",missingCover:"封面待上传",missingVideo:"请填写视频地址",noVideo:"尚未设置视频地址。",downloadInfo:"点击下方视频名称播放或下载。",watch:"播放",downloadFile:"下载文件"},
+"zh-TW":{eyebrow:"你的影片庫",heroTitle:"探索影片的<br>更多可能。",heroText:"集中展示線上影片、直播內容與 AI 創作影片。上傳封面與影片檔案，建立自己的影片庫。",collection:"影片收藏",totalVideos:"影片總數",downloadCenter:"下載中心",all:"全部影片",online:"線上影片",live:"直播",ai:"AI 影片",search:"搜尋影片名稱或介紹……",empty:"找不到影片，請嘗試其他關鍵字。",onlineDesc:"精選線上影片",liveDesc:"直播與直播回放",aiDesc:"AI 生成與創作影片",play:"播放影片",download:"下載影片",footerText:"請確認你擁有分享這些影片和圖片的權限。",missingCover:"封面待上傳",missingVideo:"請填寫影片網址",noVideo:"尚未設定影片網址。",downloadInfo:"點選下方影片以播放或下載。",watch:"播放",downloadFile:"下載檔案"},
+de:{eyebrow:"DEINE VIDEOBIBLIOTHEK",heroTitle:"Entdecke mehr<br>Möglichkeiten.",heroText:"Onlinevideos, Livestreams und KI-Videos an einem Ort. Entdecke deine Sammlung, sieh Videos an und lade Dateien herunter.",collection:"VIDEOSAMMLUNG",totalVideos:"VIDEOS IN DEINER SAMMLUNG",downloadCenter:"Downloads",all:"Alle Videos",online:"Onlinevideos",live:"Live",ai:"KI-Videos",search:"Videos suchen...",empty:"Keine Videos gefunden.",onlineDesc:"Ausgewählte Onlinevideos",liveDesc:"Livestreams und Aufzeichnungen",aiDesc:"KI-generierte Videos",play:"Video abspielen",download:"Herunterladen",footerText:"Stelle sicher, dass du die erforderlichen Nutzungsrechte hast.",missingCover:"Cover folgt",missingVideo:"Bitte Video-URL eintragen",noVideo:"Keine Video-URL konfiguriert.",downloadInfo:"Wähle unten ein Video aus.",watch:"Ansehen",downloadFile:"Datei herunterladen"},
+fr:{eyebrow:"VOTRE BIBLIOTHÈQUE VIDÉO",heroTitle:"Découvrez de<br>nouvelles vidéos.",heroText:"Retrouvez vidéos en ligne, directs et créations IA au même endroit. Parcourez, regardez et téléchargez vos vidéos.",collection:"COLLECTION VIDÉO",totalVideos:"VIDÉOS DANS VOTRE COLLECTION",downloadCenter:"Téléchargements",all:"Toutes les vidéos",online:"Vidéos en ligne",live:"Direct",ai:"Vidéos IA",search:"Rechercher des vidéos...",empty:"Aucune vidéo trouvée.",onlineDesc:"Vidéos en ligne sélectionnées",liveDesc:"Directs et rediffusions",aiDesc:"Vidéos générées par IA",play:"Lire la vidéo",download:"Télécharger",footerText:"Assurez-vous de disposer des droits nécessaires.",missingCover:"Couverture à venir",missingVideo:"Veuillez ajouter l'URL vidéo",noVideo:"Aucune URL vidéo configurée.",downloadInfo:"Sélectionnez une vidéo ci-dessous.",watch:"Regarder",downloadFile:"Télécharger le fichier"},
+es:{eyebrow:"TU BIBLIOTECA DE VÍDEOS",heroTitle:"Descubre nuevas<br>formas de ver.",heroText:"Vídeos en línea, directos y creaciones de IA en un solo lugar. Explora, reproduce y descarga tus vídeos.",collection:"COLECCIÓN DE VÍDEOS",totalVideos:"VÍDEOS EN TU BIBLIOTECA",downloadCenter:"Descargas",all:"Todos los vídeos",online:"Vídeos en línea",live:"En directo",ai:"Vídeos de IA",search:"Buscar vídeos...",empty:"No se encontraron vídeos.",onlineDesc:"Vídeos seleccionados",liveDesc:"Directos y repeticiones",aiDesc:"Vídeos generados por IA",play:"Reproducir vídeo",download:"Descargar",footerText:"Asegúrate de tener permiso para compartir los archivos.",missingCover:"Portada próximamente",missingVideo:"Añade la URL del vídeo",noVideo:"No hay una URL de vídeo configurada.",downloadInfo:"Selecciona un vídeo para descargarlo.",watch:"Ver",downloadFile:"Descargar archivo"},
+pt:{eyebrow:"SUA BIBLIOTECA DE VÍDEOS",heroTitle:"Descubra novas<br>possibilidades.",heroText:"Vídeos online, transmissões ao vivo e criações de IA num só lugar. Explore, reproduza e baixe vídeos.",collection:"COLEÇÃO DE VÍDEOS",totalVideos:"VÍDEOS NA SUA BIBLIOTECA",downloadCenter:"Downloads",all:"Todos os vídeos",online:"Vídeos online",live:"Ao vivo",ai:"Vídeos de IA",search:"Pesquisar vídeos...",empty:"Nenhum vídeo encontrado.",onlineDesc:"Vídeos online selecionados",liveDesc:"Transmissões e gravações",aiDesc:"Vídeos gerados por IA",play:"Reproduzir vídeo",download:"Baixar vídeo",footerText:"Confirme que possui os direitos necessários para compartilhar os arquivos.",missingCover:"Capa em breve",missingVideo:"Adicione o URL do vídeo",noVideo:"Nenhum URL de vídeo configurado.",downloadInfo:"Selecione um vídeo abaixo.",watch:"Assistir",downloadFile:"Baixar arquivo"},
+ja:{eyebrow:"あなたの動画ライブラリ",heroTitle:"新しい動画の<br>楽しみ方を発見。",heroText:"オンライン動画、ライブ配信、AI動画をまとめて閲覧できます。動画を再生・ダウンロードできます。",collection:"動画コレクション",totalVideos:"動画の総数",downloadCenter:"ダウンロード",all:"すべての動画",online:"オンライン動画",live:"ライブ",ai:"AI動画",search:"動画を検索...",empty:"動画が見つかりません。",onlineDesc:"おすすめの動画",liveDesc:"ライブ配信とアーカイブ",aiDesc:"AI生成動画",play:"動画を再生",download:"ダウンロード",footerText:"共有する動画や画像の使用権限を確認してください。",missingCover:"カバー画像準備中",missingVideo:"動画URLを設定してください",noVideo:"動画URLが設定されていません。",downloadInfo:"下から動画を選択してください。",watch:"再生",downloadFile:"ファイルをダウンロード"},
+ko:{eyebrow:"나만의 동영상 라이브러리",heroTitle:"새로운 동영상의<br>세계를 만나보세요.",heroText:"온라인 동영상, 라이브 방송, AI 동영상을 한곳에서 확인하고 재생하거나 다운로드하세요.",collection:"동영상 컬렉션",totalVideos:"전체 동영상",downloadCenter:"다운로드",all:"전체 동영상",online:"온라인 동영상",live:"라이브",ai:"AI 동영상",search:"동영상 검색...",empty:"동영상을 찾을 수 없습니다.",onlineDesc:"추천 온라인 동영상",liveDesc:"라이브 방송 및 다시보기",aiDesc:"AI 생성 동영상",play:"동영상 재생",download:"동영상 다운로드",footerText:"동영상과 이미지의 공유 권한을 확인하세요.",missingCover:"커버 준비 중",missingVideo:"동영상 주소를 입력하세요",noVideo:"동영상 주소가 설정되지 않았습니다.",downloadInfo:"아래에서 동영상을 선택하세요.",watch:"재생",downloadFile:"파일 다운로드"},
+ar:{eyebrow:"مكتبة الفيديو الخاصة بك",heroTitle:"اكتشف المزيد<br>من الفيديوهات.",heroText:"فيديوهات عبر الإنترنت وبث مباشر وإبداعات الذكاء الاصطناعي في مكان واحد. شاهد الملفات ونزّلها.",collection:"مجموعة الفيديوهات",totalVideos:"عدد الفيديوهات",downloadCenter:"التنزيلات",all:"كل الفيديوهات",online:"فيديوهات عبر الإنترنت",live:"بث مباشر",ai:"فيديوهات الذكاء الاصطناعي",search:"ابحث عن فيديو...",empty:"لم يتم العثور على فيديوهات.",onlineDesc:"فيديوهات مختارة",liveDesc:"بث مباشر وإعادات",aiDesc:"فيديوهات تم إنشاؤها بالذكاء الاصطناعي",play:"تشغيل الفيديو",download:"تنزيل الفيديو",footerText:"يرجى التأكد من امتلاك حقوق مشاركة الملفات.",missingCover:"الصورة قيد الإعداد",missingVideo:"يرجى إضافة رابط الفيديو",noVideo:"لم يتم إعداد رابط الفيديو.",downloadInfo:"اختر فيديو أدناه.",watch:"مشاهدة",downloadFile:"تنزيل الملف"},
+ru:{eyebrow:"ВАША ВИДЕОТЕКА",heroTitle:"Откройте для себя<br>новые видео.",heroText:"Онлайн-видео, прямые эфиры и видео, созданные ИИ, в одном месте. Смотрите и скачивайте файлы.",collection:"КОЛЛЕКЦИЯ ВИДЕО",totalVideos:"ВИДЕО В БИБЛИОТЕКЕ",downloadCenter:"Загрузки",all:"Все видео",online:"Онлайн-видео",live:"Трансляции",ai:"Видео ИИ",search:"Поиск видео...",empty:"Видео не найдены.",onlineDesc:"Подборка онлайн-видео",liveDesc:"Трансляции и записи",aiDesc:"Видео, созданные ИИ",play:"Смотреть видео",download:"Скачать видео",footerText:"Убедитесь, что у вас есть права на публикацию файлов.",missingCover:"Обложка скоро появится",missingVideo:"Добавьте ссылку на видео",noVideo:"Ссылка на видео не настроена.",downloadInfo:"Выберите видео ниже.",watch:"Смотреть",downloadFile:"Скачать файл"},
+hi:{eyebrow:"आपकी वीडियो लाइब्रेरी",heroTitle:"वीडियो की नई<br>दुनिया खोजें।",heroText:"ऑनलाइन वीडियो, लाइव स्ट्रीम और AI वीडियो एक ही जगह देखें।",collection:"वीडियो संग्रह",totalVideos:"आपकी लाइब्रेरी में वीडियो",downloadCenter:"डाउनलोड",all:"सभी वीडियो",online:"ऑनलाइन वीडियो",live:"लाइव",ai:"AI वीडियो",search:"वीडियो खोजें...",empty:"कोई वीडियो नहीं मिला।",onlineDesc:"चुने हुए वीडियो",liveDesc:"लाइव स्ट्रीम और रिकॉर्डिंग",aiDesc:"AI से बने वीडियो",play:"वीडियो चलाएँ",download:"वीडियो डाउनलोड करें",footerText:"फ़ाइल साझा करने के अधिकार सुनिश्चित करें।",missingCover:"कवर जल्द उपलब्ध होगा",missingVideo:"वीडियो URL जोड़ें",noVideo:"वीडियो URL सेट नहीं है।",downloadInfo:"डाउनलोड करने के लिए वीडियो चुनें।",watch:"देखें",downloadFile:"फ़ाइल डाउनलोड करें"},
+it:{eyebrow:"LA TUA VIDEOTECA",heroTitle:"Scopri nuovi<br>modi di guardare.",heroText:"Video online, dirette e creazioni IA in un unico posto.",collection:"RACCOLTA VIDEO",totalVideos:"VIDEO NELLA TUA RACCOLTA",downloadCenter:"Download",all:"Tutti i video",online:"Video online",live:"Dirette",ai:"Video IA",search:"Cerca video...",empty:"Nessun video trovato.",onlineDesc:"Video online selezionati",liveDesc:"Dirette e registrazioni",aiDesc:"Video generati con IA",play:"Riproduci video",download:"Scarica video",footerText:"Assicurati di avere i diritti necessari per condividere i file.",missingCover:"Copertina in arrivo",missingVideo:"Inserisci l'URL del video",noVideo:"URL video non configurato.",downloadInfo:"Seleziona un video qui sotto.",watch:"Guarda",downloadFile:"Scarica file"},
+nl:{eyebrow:"JOUW VIDEOBIBLIOTHEEK",heroTitle:"Ontdek meer<br>manieren om te kijken.",heroText:"Onlinevideo's, livestreams en AI-creaties op één plek.",collection:"VIDEOVERZAMELING",totalVideos:"VIDEO'S IN JE BIBLIOTHEEK",downloadCenter:"Downloads",all:"Alle video's",online:"Onlinevideo's",live:"Live",ai:"AI-video's",search:"Video's zoeken...",empty:"Geen video's gevonden.",onlineDesc:"Geselecteerde onlinevideo's",liveDesc:"Livestreams en opnames",aiDesc:"Door AI gemaakte video's",play:"Video afspelen",download:"Video downloaden",footerText:"Zorg dat je toestemming hebt om media te delen.",missingCover:"Omslag volgt",missingVideo:"Voeg de video-URL toe",noVideo:"Geen video-URL ingesteld.",downloadInfo:"Selecteer hieronder een video.",watch:"Bekijken",downloadFile:"Bestand downloaden"},
+tr:{eyebrow:"VİDEO KÜTÜPHANENİZ",heroTitle:"Yeni video<br>deneyimlerini keşfedin.",heroText:"Çevrimiçi videolar, canlı yayınlar ve yapay zekâ videoları tek yerde.",collection:"VİDEO KOLEKSİYONU",totalVideos:"KÜTÜPHANENİZDEKİ VİDEOLAR",downloadCenter:"İndirmeler",all:"Tüm videolar",online:"Çevrimiçi videolar",live:"Canlı",ai:"Yapay zekâ videoları",search:"Video ara...",empty:"Video bulunamadı.",onlineDesc:"Seçili videolar",liveDesc:"Canlı yayınlar ve kayıtlar",aiDesc:"Yapay zekâ ile oluşturulan videolar",play:"Videoyu oynat",download:"Videoyu indir",footerText:"Dosyaları paylaşma haklarına sahip olduğunuzdan emin olun.",missingCover:"Kapak yakında",missingVideo:"Video URL'sini ekleyin",noVideo:"Video URL'si ayarlanmamış.",downloadInfo:"Aşağıdan bir video seçin.",watch:"İzle",downloadFile:"Dosyayı indir"},
+id:{eyebrow:"PERPUSTAKAAN VIDEO ANDA",heroTitle:"Temukan lebih banyak<br>video menarik.",heroText:"Video online, siaran langsung, dan kreasi AI dalam satu tempat.",collection:"KOLEKSI VIDEO",totalVideos:"VIDEO DI PERPUSTAKAAN",downloadCenter:"Unduhan",all:"Semua video",online:"Video online",live:"Siaran langsung",ai:"Video AI",search:"Cari video...",empty:"Video tidak ditemukan.",onlineDesc:"Video online pilihan",liveDesc:"Siaran langsung dan rekaman",aiDesc:"Video yang dibuat dengan AI",play:"Putar video",download:"Unduh video",footerText:"Pastikan Anda memiliki izin untuk membagikan file.",missingCover:"Sampul segera hadir",missingVideo:"Tambahkan URL video",noVideo:"URL video belum diatur.",downloadInfo:"Pilih video di bawah.",watch:"Tonton",downloadFile:"Unduh file"},
+th:{eyebrow:"คลังวิดีโอของคุณ",heroTitle:"ค้นพบวิดีโอ<br>รูปแบบใหม่",heroText:"รวมวิดีโอออนไลน์ ไลฟ์สตรีม และวิดีโอ AI ไว้ในที่เดียว",collection:"คอลเลกชันวิดีโอ",totalVideos:"วิดีโอทั้งหมด",downloadCenter:"ดาวน์โหลด",all:"วิดีโอทั้งหมด",online:"วิดีโอออนไลน์",live:"ไลฟ์สด",ai:"วิดีโอ AI",search:"ค้นหาวิดีโอ...",empty:"ไม่พบวิดีโอ",onlineDesc:"วิดีโอออนไลน์ที่คัดสรร",liveDesc:"ไลฟ์สดและวิดีโอย้อนหลัง",aiDesc:"วิดีโอที่สร้างด้วย AI",play:"เล่นวิดีโอ",download:"ดาวน์โหลดวิดีโอ",footerText:"โปรดตรวจสอบสิทธิ์ในการแชร์ไฟล์",missingCover:"กำลังเตรียมภาพปก",missingVideo:"กรุณาเพิ่ม URL วิดีโอ",noVideo:"ยังไม่ได้ตั้งค่า URL วิดีโอ",downloadInfo:"เลือกวิดีโอด้านล่าง",watch:"ดู",downloadFile:"ดาวน์โหลดไฟล์"},
+vi:{eyebrow:"THƯ VIỆN VIDEO CỦA BẠN",heroTitle:"Khám phá thêm<br>nhiều video.",heroText:"Video trực tuyến, phát trực tiếp và video AI trong cùng một nơi.",collection:"BỘ SƯU TẬP VIDEO",totalVideos:"VIDEO TRONG THƯ VIỆN",downloadCenter:"Tải xuống",all:"Tất cả video",online:"Video trực tuyến",live:"Trực tiếp",ai:"Video AI",search:"Tìm video...",empty:"Không tìm thấy video.",onlineDesc:"Video trực tuyến chọn lọc",liveDesc:"Phát trực tiếp và phát lại",aiDesc:"Video được tạo bằng AI",play:"Phát video",download:"Tải video",footerText:"Hãy đảm bảo bạn có quyền chia sẻ các tệp.",missingCover:"Ảnh bìa sắp có",missingVideo:"Vui lòng thêm URL video",noVideo:"Chưa cấu hình URL video.",downloadInfo:"Chọn video bên dưới.",watch:"Xem",downloadFile:"Tải tệp"},
+pl:{eyebrow:"TWOJA BIBLIOTEKA WIDEO",heroTitle:"Odkrywaj nowe<br>możliwości oglądania.",heroText:"Filmy online, transmisje na żywo i materiały AI w jednym miejscu.",collection:"KOLEKCJA WIDEO",totalVideos:"FILMY W BIBLIOTECE",downloadCenter:"Pobieranie",all:"Wszystkie filmy",online:"Filmy online",live:"Na żywo",ai:"Filmy AI",search:"Szukaj filmów...",empty:"Nie znaleziono filmów.",onlineDesc:"Wybrane filmy online",liveDesc:"Transmisje i nagrania",aiDesc:"Filmy wygenerowane przez AI",play:"Odtwórz film",download:"Pobierz film",footerText:"Upewnij się, że masz prawa do udostępniania plików.",missingCover:"Okładka wkrótce",missingVideo:"Dodaj adres URL filmu",noVideo:"Nie skonfigurowano adresu URL.",downloadInfo:"Wybierz film poniżej.",watch:"Oglądaj",downloadFile:"Pobierz plik"},
+sv:{eyebrow:"DITT VIDEOBIBLIOTEK",heroTitle:"Upptäck fler<br>sätt att titta.",heroText:"Onlinevideor, livesändningar och AI-skapelser på ett ställe.",collection:"VIDEOSAMLING",totalVideos:"VIDEOR I DITT BIBLIOTEK",downloadCenter:"Nedladdningar",all:"Alla videor",online:"Onlinevideor",live:"Live",ai:"AI-videor",search:"Sök videor...",empty:"Inga videor hittades.",onlineDesc:"Utvalda onlinevideor",liveDesc:"Livesändningar och repriser",aiDesc:"AI-genererade videor",play:"Spela video",download:"Ladda ner video",footerText:"Kontrollera att du har rätt att dela filerna.",missingCover:"Omslag kommer snart",missingVideo:"Lägg till videons URL",noVideo:"Ingen video-URL har angetts.",downloadInfo:"Välj en video nedan.",watch:"Titta",downloadFile:"Ladda ner fil"},
+el:{eyebrow:"Η ΒΙΒΛΙΟΘΗΚΗ ΒΙΝΤΕΟ ΣΑΣ",heroTitle:"Ανακαλύψτε νέους<br>τρόπους προβολής.",heroText:"Online βίντεο, ζωντανές μεταδόσεις και δημιουργίες AI σε ένα μέρος.",collection:"ΣΥΛΛΟΓΗ ΒΙΝΤΕΟ",totalVideos:"ΒΙΝΤΕΟ ΣΤΗ ΒΙΒΛΙΟΘΗΚΗ",downloadCenter:"Λήψεις",all:"Όλα τα βίντεο",online:"Online βίντεο",live:"Ζωντανά",ai:"Βίντεο AI",search:"Αναζήτηση βίντεο...",empty:"Δεν βρέθηκαν βίντεο.",onlineDesc:"Επιλεγμένα online βίντεο",liveDesc:"Ζωντανές μεταδόσεις και εγγραφές",aiDesc:"Βίντεο που δημιουργήθηκαν με AI",play:"Αναπαραγωγή",download:"Λήψη βίντεο",footerText:"Βεβαιωθείτε ότι έχετε δικαίωμα κοινής χρήσης των αρχείων.",missingCover:"Η εικόνα εξωφύλλου έρχεται σύντομα",missingVideo:"Προσθέστε τη διεύθυνση βίντεο",noVideo:"Δεν έχει οριστεί διεύθυνση βίντεο.",downloadInfo:"Επιλέξτε ένα βίντεο παρακάτω.",watch:"Προβολή",downloadFile:"Λήψη αρχείου"},
+he:{eyebrow:"ספריית הווידאו שלך",heroTitle:"גלו דרכים חדשות<br>לצפות.",heroText:"סרטונים מקוונים, שידורים חיים ויצירות AI במקום אחד.",collection:"אוסף סרטונים",totalVideos:"סרטונים בספרייה",downloadCenter:"הורדות",all:"כל הסרטונים",online:"סרטונים מקוונים",live:"שידור חי",ai:"סרטוני AI",search:"חיפוש סרטונים...",empty:"לא נמצאו סרטונים.",onlineDesc:"סרטונים נבחרים",liveDesc:"שידורים חיים והקלטות",aiDesc:"סרטונים שנוצרו באמצעות AI",play:"הפעל סרטון",download:"הורד סרטון",footerText:"ודאו שיש לכם הרשאה לשתף את הקבצים.",missingCover:"התמונה תתווסף בקרוב",missingVideo:"יש להוסיף כתובת סרטון",noVideo:"לא הוגדרה כתובת סרטון.",downloadInfo:"בחרו סרטון למטה.",watch:"צפייה",downloadFile:"הורדת קובץ"}
+};
+
+const CATEGORY_ORDER=["online","live","ai"];
+let currentCategory="all";
+let currentLanguage="en";
+const $=s=>document.querySelector(s);
+function escapeHTML(value){return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function normalizeLanguage(raw){
+  if(!raw)return "en";
+  const value=raw.replace("_","-");
+  const lower=value.toLowerCase();
+  if(lower==="zh-tw"||lower==="zh-hk"||lower==="zh-hant")return "zh-TW";
+  if(lower==="zh"||lower.startsWith("zh-"))return "zh-CN";
+  const base=lower.split("-")[0];
+  return TRANSLATIONS[base]?base:"en";
+}
+function detectLanguage(){
+  const choices=navigator.languages?.length?navigator.languages:[navigator.language||"en"];
+  for(const lang of choices){const normalized=normalizeLanguage(lang);if(TRANSLATIONS[normalized])return normalized;}
+  return "en";
+}
+function t(key){return TRANSLATIONS[currentLanguage]?.[key]??TRANSLATIONS.en[key]??key;}
+function localizedText(value){
+  if(typeof value==="string")return value;
+  if(!value||typeof value!=="object")return "";
+  return value[currentLanguage]||value[currentLanguage.split("-")[0]]||value.en||value["zh-CN"]||Object.values(value)[0]||"";
+}
+function setLanguage(choice,save=true){
+  currentLanguage=choice==="auto"?detectLanguage():normalizeLanguage(choice);
+  document.documentElement.lang=currentLanguage;
+  document.documentElement.dir=["ar","he"].includes(currentLanguage)?"rtl":"ltr";
+  if(save){try{localStorage.setItem("preferred-language",choice);}catch(e){}}
+  document.querySelectorAll("[data-i18n]").forEach(el=>{el.textContent=t(el.dataset.i18n);});
+  document.querySelectorAll("[data-i18n-html]").forEach(el=>{el.innerHTML=t(el.dataset.i18nHtml);});
+  $("#searchInput").placeholder=t("search");
+  $("#languageSelect").value=choice;
+  renderVideos();
+}
+function categoryName(category){return t(category);}
+function categoryDescription(category){return t(category+"Desc");}
+function visibleVideos(){
+  const query=$("#searchInput").value.trim().toLocaleLowerCase();
+  return VIDEO_LIBRARY.filter(video=>{
+    const categoryMatch=currentCategory==="all"||video.category===currentCategory;
+    const searchable=[localizedText(video.title),localizedText(video.description),video.category,
+      ...(typeof video.title==="object"?Object.values(video.title):[]),
+      ...(typeof video.description==="object"?Object.values(video.description):[])].join(" ").toLocaleLowerCase();
+    return categoryMatch&&searchable.includes(query);
+  });
+}
+function createCard(video){
+  const title=escapeHTML(localizedText(video.title));
+  const description=escapeHTML(localizedText(video.description));
+  const cover=escapeHTML(video.cover||"");
+  const action=CARD_CLICK_ACTION==="play"?"play":"download";
+  return `<article class="card"><div class="cover">
+    ${cover?`<img src="${cover}" alt="${title}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'"><div class="cover-placeholder" style="display:none">${escapeHTML(t("missingCover"))}</div>`:`<div class="cover-placeholder">${escapeHTML(t("missingCover"))}</div>`}
+    <span class="tag">${escapeHTML(categoryName(video.category))}</span><span class="play-icon" aria-hidden="true">▶</span>
+    </div><div class="card-body"><h3>${title}</h3><p class="description">${description||"&nbsp;"}</p>
+    <div class="card-footer"><span class="type-label">${escapeHTML(video.category.toUpperCase())}</span>
+    <button class="action-btn" type="button" data-action="${action}" data-id="${escapeHTML(video.id)}">${escapeHTML(t(action))}</button></div></div></article>`;
+}
+function renderVideos(){
+  const videos=visibleVideos();
+  $("#totalCount").textContent=String(VIDEO_LIBRARY.length).padStart(3,"0");
+  const sections=$("#sections");sections.innerHTML="";
+  CATEGORY_ORDER.forEach(category=>{
+    if(currentCategory!=="all"&&currentCategory!==category)return;
+    const group=videos.filter(v=>v.category===category);if(!group.length)return;
+    const section=document.createElement("section");section.className="section";
+    section.innerHTML=`<div class="section-head"><div><h2>${escapeHTML(categoryName(category))}</h2><p>${escapeHTML(categoryDescription(category))}</p></div><span class="count">${group.length} · ${escapeHTML(t("totalVideos"))}</span></div><div class="grid">${group.map(createCard).join("")}</div>`;
+    sections.appendChild(section);
+  });
+  $("#emptyState").style.display=videos.length?"none":"block";
+}
+function findVideo(id){return VIDEO_LIBRARY.find(v=>v.id===id);}
+function getDownloadUrl(video){
+  if(DOWNLOAD_API_BASE){/* Reserved: return `${DOWNLOAD_API_BASE}/download/${encodeURIComponent(video.id)}` after API is implemented. */}
+  return video.src||"";
+}
+function downloadVideo(video){
+  const url=getDownloadUrl(video);if(!url){alert(t("missingVideo"));return;}
+  const link=document.createElement("a");link.href=url;link.download=video.downloadName||"";link.target="_blank";link.rel="noopener";document.body.appendChild(link);link.click();link.remove();
+}
+function playVideo(video){
+  if(!video.src){alert(t("noVideo"));return;}
+  const player=$("#playerVideo");player.pause();player.src=video.src;player.load();
+  $("#playerTitle").textContent=localizedText(video.title);$("#playerDescription").textContent=localizedText(video.description);
+  $("#playerDialog").showModal();player.play().catch(()=>{});
+}
+function openDownloadCenter(){
+  const list=$("#downloadList");list.innerHTML="";
+  VIDEO_LIBRARY.forEach(video=>{
+    const item=document.createElement("div");item.className="download-item";
+    const title=document.createElement("span");title.textContent=localizedText(video.title);
+    const actions=document.createElement("div");actions.style.display="flex";actions.style.gap="12px";
+    if(video.src){const watch=document.createElement("a");watch.href=video.src;watch.target="_blank";watch.rel="noopener";watch.textContent=t("watch");actions.appendChild(watch);}
+    const dl=document.createElement("a");dl.href="#";dl.textContent=t("downloadFile");dl.addEventListener("click",e=>{e.preventDefault();downloadVideo(video);});actions.appendChild(dl);
+    item.append(title,actions);list.appendChild(item);
+  });
+  $("#downloadsDialog").showModal();
+}
+$("#sections").addEventListener("click",event=>{
+  const button=event.target.closest("button[data-action]");if(!button)return;
+  const video=findVideo(button.dataset.id);if(!video)return;
+  button.dataset.action==="play"?playVideo(video):downloadVideo(video);
+});
+$("#tabs").addEventListener("click",event=>{
+  const button=event.target.closest("button[data-category]");if(!button)return;
+  currentCategory=button.dataset.category;
+  document.querySelectorAll(".tab").forEach(tab=>tab.classList.toggle("active",tab===button));
+  renderVideos();
+});
+$("#searchInput").addEventListener("input",renderVideos);
+$("#languageSelect").addEventListener("change",event=>setLanguage(event.target.value,true));
+$("#downloadCenter").addEventListener("click",openDownloadCenter);
+$("#closePlayer").addEventListener("click",()=>$("#playerDialog").close());
+$("#closeDownloads").addEventListener("click",()=>$("#downloadsDialog").close());
+$("#playerDialog").addEventListener("close",()=>{const p=$("#playerVideo");p.pause();p.removeAttribute("src");p.load();});
+$("#playerDialog").addEventListener("click",e=>{if(e.target===$("#playerDialog"))$("#playerDialog").close();});
+$("#downloadsDialog").addEventListener("click",e=>{if(e.target===$("#downloadsDialog"))$("#downloadsDialog").close();});
+$("#year").textContent=new Date().getFullYear();
+let preferred="auto";try{preferred=localStorage.getItem("preferred-language")||"auto";}catch(e){}
+setLanguage(preferred,false);
+</script>
 </body>
 </html>

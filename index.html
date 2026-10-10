@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -167,6 +168,12 @@ button { cursor: pointer; font: inherit; border: none; background: none; color: 
 .empty {
   display: none; text-align: center; padding: 60px 20px; color: #666;
 }
+
+/* Arabic RTL support */
+html[dir="rtl"] .sec-title,
+html[dir="rtl"] .card-meta {
+  direction: rtl;
+}
 </style>
 </head>
 <body>
@@ -187,6 +194,8 @@ button { cursor: pointer; font: inherit; border: none; background: none; color: 
       <option value="hi">हिन्दी</option>
       <option value="fr">Français</option>
       <option value="de">Deutsch</option>
+      <option value="es">Español</option>
+      <option value="ar">العربية</option>
     </select>
   </div>
 </div>
@@ -266,7 +275,10 @@ const I18N = {
   ko: { all:"전체", live:"라이브", ai:"AI", anime:"애니", europe:"서양", asian:"아시아", homemade:"홈메이드", lesbian:"레즈", threesome:"쓰리섬", anal:"애널", longlegs:"롱레그", search:"검색...", empty:"영상 없음", dl:"다운로드", big:"↓ 다운로드 후 무료 시청", more:"더 보기", tip:"100% 무료 · 가입 불필요", online:"온라인 " },
   hi: { all:"सभी", live:"लाइव", ai:"AI", anime:"एनीमे", europe:"वेस्टर्न", asian:"एशियन", homemade:"होममेड", lesbian:"लेस्बियन", threesome:"थ्रीसम", anal:"एनल", longlegs:"लॉन्ग लेग्स", search:"खोजें...", empty:"कोई वीडियो नहीं", dl:"डाउनलोड", big:"↓ डाउनलोड · मुफ्त देखें · बिना लॉगिन", more:"और देखें", tip:"100% मुफ्त · बिना रजिस्ट्रेशन", online:"ऑनलाइन " },
   fr: { all:"Tout", live:"Live", ai:"IA", anime:"Anime", europe:"Occidental", asian:"Asiatique", homemade:"Amateur", lesbian:"Lesbienne", threesome:"Plan à 3", anal:"Anal", longlegs:"Longues jambes", search:"Rechercher...", empty:"Aucune vidéo", dl:"Télécharger", big:"↓ Télécharger · Regarder gratuitement", more:"Voir plus", tip:"100% Gratuit · Sans inscription", online:"En ligne " },
-  de: { all:"Alle", live:"Live", ai:"KI", anime:"Anime", europe:"Western", asian:"Asiatisch", homemade:"Homemade", lesbian:"Lesbisch", threesome:"Dreier", anal:"Anal", longlegs:"Lange Beine", search:"Suchen...", empty:"Keine Videos", dl:"Download", big:"↓ Download · Kostenlos ansehen", more:"Mehr sehen", tip:"100% Kostenlos · Keine Anmeldung", online:"Online " }
+  de: { all:"Alle", live:"Live", ai:"KI", anime:"Anime", europe:"Western", asian:"Asiatisch", homemade:"Homemade", lesbian:"Lesbisch", threesome:"Dreier", anal:"Anal", longlegs:"Lange Beine", search:"Suchen...", empty:"Keine Videos", dl:"Download", big:"↓ Download · Kostenlos ansehen", more:"Mehr sehen", tip:"100% Kostenlos · Keine Anmeldung", online:"Online " },
+
+  es: { all:"Todo", live:"En vivo", ai:"IA", anime:"Anime", europe:"Occidental", asian:"Asiático", homemade:"Casero", lesbian:"Lesbianas", threesome:"Trío", anal:"Anal", longlegs:"Piernas largas", search:"Buscar títulos...", empty:"No se encontraron videos", dl:"Descargar", big:"↓ Descargar · Ver gratis · Sin iniciar sesión", more:"Haz clic para ver más", tip:"100% gratis · Sin registro · Sin cuotas", online:"En línea " },
+  ar: { all:"الكل", live:"مباشر", ai:"ذكاء اصطناعي", anime:"أنمي", europe:"غربي", asian:"آسيوي", homemade:"منزلي", lesbian:"سحاقي", threesome:"ثلاثي", anal:"شرجي", longlegs:"أرجل طويلة", search:"ابحث عن العناوين...", empty:"لم يتم العثور على فيديوهات", dl:"تنزيل", big:"↓ تنزيل · مشاهدة مجانية · بدون تسجيل دخول", more:"انقر لعرض المزيد", tip:"مجاني 100% · لا يلزم التسجيل · بدون رسوم", online:"متصل " }
 };
 
 let currentCategory = "all";
@@ -290,6 +302,8 @@ function normalizeLang(raw) {
   if (l.startsWith("hi")) return "hi";
   if (l.startsWith("fr")) return "fr";
   if (l.startsWith("de")) return "de";
+  if (l.startsWith("es")) return "es";
+  if (l.startsWith("ar")) return "ar";
   if (l.startsWith("en")) return "en";
   return "en";
 }
@@ -304,6 +318,7 @@ function detectLang() {
 function setLang(choice) {
   currentLanguage = (choice === "auto") ? detectLang() : normalizeLang(choice);
   document.documentElement.lang = currentLanguage;
+  document.documentElement.dir = currentLanguage === "ar" ? "rtl" : "ltr";
   try { localStorage.setItem("wqj-lang", choice); } catch(e) {}
   const sel = $("#languageSelect");
   if (sel) sel.value = choice;

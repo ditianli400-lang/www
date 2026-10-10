@@ -415,47 +415,46 @@ dialog::backdrop { background: rgba(0,0,0,0.75); }
 const DOWNLOAD_API_BASE = "";   // ← 在这里填你的下载 API
 
 const VIDEO_LIBRARY = [
-  // 直播 (更密集展示)
-  {id:"v015", category:"live", title:{"zh-CN":"直播回放精选","en":"Live Replay"}, cover:"covers/cover-015.jpg", duration:"45:00", views:"56.8K", live:true},
-  {id:"v024", category:"live", title:{"zh-CN":"午夜直播专场","en":"Midnight Live"}, cover:"covers/cover-024.jpg", duration:"38:20", views:"72.4K", live:true},
-  {id:"v025", category:"live", title:{"zh-CN":"情侣直播实录","en":"Couple Live"}, cover:"covers/cover-025.jpg", duration:"52:10", views:"91.3K", live:true},
-  {id:"v026", category:"live", title:{"zh-CN":"主播私房直播","en":"Private Live"}, cover:"covers/cover-026.jpg", duration:"41:55", views:"68.7K", live:true},
-  {id:"v027", category:"live", title:{"zh-CN":"热门直播精华","en":"Popular Live"}, cover:"covers/cover-027.jpg", duration:"33:40", views:"105K", live:true},
-  {id:"v028", category:"live", title:{"zh-CN":"Yui Takahashi 直播","en":"Yui Live"}, cover:"covers/cover-028.jpg", duration:"28:15", views:"48.2K", live:true},
-  {id:"v029", category:"live", title:{"zh-CN":"Rina Sato 在线","en":"Rina Live"}, cover:"covers/cover-029.jpg", duration:"35:40", views:"61.9K", live:true},
-  {id:"v030", category:"live", title:{"zh-CN":"Miu Tanaka 直播中","en":"Miu Live"}, cover:"covers/cover-030.jpg", duration:"22:50", views:"39.4K", live:true},
+  // 直播
+  {id:"v015", category:"live", title:{"zh-CN":"直播回放精选","en":"Live Replay"}, cover:"v015.webp", duration:"45:00", views:"56.8K", live:true},
+  {id:"v024", category:"live", title:{"zh-CN":"午夜直播专场","en":"Midnight Live"}, cover:"v024.webp", duration:"38:20", views:"72.4K", live:true},
+  {id:"v025", category:"live", title:{"zh-CN":"情侣直播实录","en":"Couple Live"}, cover:"v025.webp", duration:"52:10", views:"91.3K", live:true},
+  {id:"v026", category:"live", title:{"zh-CN":"主播私房直播","en":"Private Live"}, cover:"v026.webp", duration:"41:55", views:"68.7K", live:true},
+  {id:"v027", category:"live", title:{"zh-CN":"热门直播精华","en":"Popular Live"}, cover:"v027.webp", duration:"33:40", views:"105K", live:true},
+  {id:"v028", category:"live", title:{"zh-CN":"Yui Takahashi 直播","en":"Yui Live"}, cover:"v028.webp", duration:"28:15", views:"48.2K", live:true},
+  {id:"v029", category:"live", title:{"zh-CN":"Rina Sato 在线","en":"Rina Live"}, cover:"v029.webp", duration:"35:40", views:"61.9K", live:true},
+  {id:"v030", category:"live", title:{"zh-CN":"Miu Tanaka 直播中","en":"Miu Live"}, cover:"v030.webp", duration:"22:50", views:"39.4K", live:true},
 
   // AI
-  {id:"v013", category:"ai", title:{"zh-CN":"AI生成虚拟女友","en":"AI Girlfriend"}, cover:"covers/cover-013.jpg", duration:"6:40", views:"112K"},
-  {id:"v016", category:"ai", title:{"zh-CN":"AI完美身材模特","en":"AI Perfect Body"}, cover:"covers/cover-016.jpg", duration:"8:15", views:"87.3K"},
-  {id:"v017", category:"ai", title:{"zh-CN":"AI办公室幻想","en":"AI Office"}, cover:"covers/cover-017.jpg", duration:"11:20", views:"64.8K"},
-  {id:"v018", category:"ai", title:{"zh-CN":"AI浴室私密","en":"AI Bathroom"}, cover:"covers/cover-018.jpg", duration:"7:55", views:"93.1K"},
-  {id:"v019", category:"ai", title:{"zh-CN":"AI夜店激情","en":"AI Nightclub"}, cover:"covers/cover-019.jpg", duration:"9:40", views:"71.5K"},
-  {id:"v031", category:"ai", title:{"zh-CN":"AI 黑丝长腿","en":"AI Long Legs"}, cover:"covers/cover-031.jpg", duration:"10:05", views:"58.7K"},
+  {id:"v013", category:"ai", title:{"zh-CN":"AI生成虚拟女友","en":"AI Girlfriend"}, cover:"v013.webp", duration:"6:40", views:"112K"},
+  {id:"v016", category:"ai", title:{"zh-CN":"AI完美身材模特","en":"AI Perfect Body"}, cover:"v016.webp", duration:"8:15", views:"87.3K"},
+  {id:"v017", category:"ai", title:{"zh-CN":"AI办公室幻想","en":"AI Office"}, cover:"v017.webp", duration:"11:20", views:"64.8K"},
+  {id:"v018", category:"ai", title:{"zh-CN":"AI浴室私密","en":"AI Bathroom"}, cover:"v018.webp", duration:"7:55", views:"93.1K"},
+  {id:"v019", category:"ai", title:{"zh-CN":"AI夜店激情","en":"AI Nightclub"}, cover:"v019.webp", duration:"9:40", views:"71.5K"},
+  {id:"v031", category:"ai", title:{"zh-CN":"AI 黑丝长腿","en":"AI Long Legs"}, cover:"v031.webp", duration:"10:05", views:"58.7K"},
 
   // 动漫
-  {id:"v014", category:"anime", title:{"zh-CN":"二次元动漫特辑","en":"2D Anime"}, cover:"covers/cover-014.jpg", duration:"18:20", views:"203K"},
-  {id:"v020", category:"anime", title:{"zh-CN":"二次元女仆侍奉","en":"2D Maid"}, cover:"covers/cover-020.jpg", duration:"14:35", views:"156K"},
-  {id:"v021", category:"anime", title:{"zh-CN":"校园动漫学姐","en":"School Anime"}, cover:"covers/cover-021.jpg", duration:"16:10", views:"128K"},
-  {id:"v022", category:"anime", title:{"zh-CN":"幻想世界精灵","en":"Fantasy Elf"}, cover:"covers/cover-022.jpg", duration:"12:45", views:"97.6K"},
-  {id:"v023", category:"anime", title:{"zh-CN":"机甲少女特辑","en":"Mecha Girl"}, cover:"covers/cover-023.jpg", duration:"20:05", views:"84.2K"},
-  {id:"v032", category:"anime", title:{"zh-CN":"猫耳娘特辑","en":"Catgirl"}, cover:"covers/cover-032.jpg", duration:"15:30", views:"76.3K"},
+  {id:"v014", category:"anime", title:{"zh-CN":"二次元动漫特辑","en":"2D Anime"}, cover:"v014.webp", duration:"18:20", views:"203K"},
+  {id:"v020", category:"anime", title:{"zh-CN":"二次元女仆侍奉","en":"2D Maid"}, cover:"v020.webp", duration:"14:35", views:"156K"},
+  {id:"v021", category:"anime", title:{"zh-CN":"校园动漫学姐","en":"School Anime"}, cover:"v021.webp", duration:"16:10", views:"128K"},
+  {id:"v022", category:"anime", title:{"zh-CN":"幻想世界精灵","en":"Fantasy Elf"}, cover:"v022.webp", duration:"12:45", views:"97.6K"},
+  {id:"v023", category:"anime", title:{"zh-CN":"机甲少女特辑","en":"Mecha Girl"}, cover:"v023.webp", duration:"20:05", views:"84.2K"},
+  {id:"v032", category:"anime", title:{"zh-CN":"猫耳娘特辑","en":"Catgirl"}, cover:"v032.webp", duration:"15:30", views:"76.3K"},
 
-  // 其他分类
-  {id:"v001", category:"europe", title:{"zh-CN":"我和老板的妻子","en":"Boss Wife"}, cover:"covers/cover-001.jpg", duration:"10:51", views:"5.1K"},
-  {id:"v002", category:"homemade", title:{"zh-CN":"妻子总是饥渴难耐","en":"Horny Wife"}, cover:"covers/cover-002.jpg", duration:"7:15", views:"16.9K"},
-  {id:"v003", category:"asian", title:{"zh-CN":"从乳头到阴蒂","en":"Nipple to Clit"}, cover:"covers/cover-003.jpg", duration:"4:00", views:"18.2K"},
-  {id:"v004", category:"lesbian", title:{"zh-CN":"黑发姐妹花","en":"Brunette Lesbians"}, cover:"covers/cover-004.jpg", duration:"10:51", views:"8.3K"},
-  {id:"v005", category:"europe", title:{"zh-CN":"圣诞特别篇","en":"Xmas Special"}, cover:"covers/cover-005.jpg", duration:"11:17", views:"248K"},
-  {id:"v006", category:"threesome", title:{"zh-CN":"两个饥渴女孩3P","en":"Threesome"}, cover:"covers/cover-006.jpg", duration:"15:07", views:"19.1K"},
-  {id:"v007", category:"anal", title:{"zh-CN":"Sasha Paige 双插","en":"DP Action"}, cover:"covers/cover-007.jpg", duration:"38:03", views:"713K"},
-  {id:"v008", category:"longlegs", title:{"zh-CN":"红衣长腿金发","en":"Long Legs Blonde"}, cover:"covers/cover-008.jpg", duration:"12:40", views:"42.6K"},
-  {id:"v009", category:"asian", title:{"zh-CN":"日本无码成熟","en":"JP Mature"}, cover:"covers/cover-009.jpg", duration:"22:15", views:"89.3K"},
-  {id:"v010", category:"homemade", title:{"zh-CN":"业余情侣高潮","en":"Amateur Couple"}, cover:"covers/cover-010.jpg", duration:"9:28", views:"31.7K"},
-  {id:"v011", category:"europe", title:{"zh-CN":"老板妻子的秘密","en":"Boss Wife Secret"}, cover:"covers/cover-011.jpg", duration:"14:02", views:"67.4K"},
-  {id:"v012", category:"lesbian", title:{"zh-CN":"红色内衣女女","en":"Red Lingerie"}, cover:"covers/cover-012.jpg", duration:"8:55", views:"25.8K"}
+  // 其他
+  {id:"v001", category:"europe", title:{"zh-CN":"我和老板的妻子","en":"Boss Wife"}, cover:"v001.webp", duration:"10:51", views:"5.1K"},
+  {id:"v002", category:"homemade", title:{"zh-CN":"妻子总是饥渴难耐","en":"Horny Wife"}, cover:"v002.webp", duration:"7:15", views:"16.9K"},
+  {id:"v003", category:"asian", title:{"zh-CN":"从乳头到阴蒂","en":"Nipple to Clit"}, cover:"v003.webp", duration:"4:00", views:"18.2K"},
+  {id:"v004", category:"lesbian", title:{"zh-CN":"黑发姐妹花","en":"Brunette Lesbians"}, cover:"v004.webp", duration:"10:51", views:"8.3K"},
+  {id:"v005", category:"europe", title:{"zh-CN":"圣诞特别篇","en":"Xmas Special"}, cover:"v005.webp", duration:"11:17", views:"248K"},
+  {id:"v006", category:"threesome", title:{"zh-CN":"两个饥渴女孩3P","en":"Threesome"}, cover:"v006.webp", duration:"15:07", views:"19.1K"},
+  {id:"v007", category:"anal", title:{"zh-CN":"Sasha Paige 双插","en":"DP Action"}, cover:"v007.webp", duration:"38:03", views:"713K"},
+  {id:"v008", category:"longlegs", title:{"zh-CN":"红衣长腿金发","en":"Long Legs Blonde"}, cover:"v008.webp", duration:"12:40", views:"42.6K"},
+  {id:"v009", category:"asian", title:{"zh-CN":"日本无码成熟","en":"JP Mature"}, cover:"v009.webp", duration:"22:15", views:"89.3K"},
+  {id:"v010", category:"homemade", title:{"zh-CN":"业余情侣高潮","en":"Amateur Couple"}, cover:"v010.webp", duration:"9:28", views:"31.7K"},
+  {id:"v011", category:"europe", title:{"zh-CN":"老板妻子的秘密","en":"Boss Wife Secret"}, cover:"v011.webp", duration:"14:02", views:"67.4K"},
+  {id:"v012", category:"lesbian", title:{"zh-CN":"红色内衣女女","en":"Red Lingerie"}, cover:"v012.webp", duration:"8:55", views:"25.8K"}
 ];
-
 const I18N = {
   "zh-CN": { all:"全部", live:"直播", ai:"AI视频", anime:"动漫", europe:"欧美", asian:"亚洲", homemade:"自制", lesbian:"女同", threesome:"3P", anal:"肛门", longlegs:"长腿", search:"搜索标题...", empty:"没有找到视频", dl:"下载", big:"↓ 下载立即免费观看 · 免登录", tip:"100% 免费 · 无需注册 · 无月费", online:"在线 ", center:"下载中心" },
   "zh-TW": { all:"全部", live:"直播", ai:"AI視頻", anime:"動漫", europe:"歐美", asian:"亞洲", homemade:"自製", lesbian:"女同", threesome:"3P", anal:"肛門", longlegs:"長腿", search:"搜尋標題...", empty:"找不到視頻", dl:"下載", big:"↓ 下載立即免費觀看 · 免登入", tip:"100% 免費 · 無需註冊 · 無月費", online:"在線 ", center:"下載中心" },

@@ -2,164 +2,178 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#0a0a0c">
-<meta name="description" content="WQJ - 免费观看所有视频">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#0d0d0f">
 <title>WQJ</title>
 <style>
 :root {
-  --bg: #0a0a0c;
-  --panel: #141416;
-  --hover: #1c1c20;
-  --text: #f0f0f2;
-  --muted: #8a8a96;
-  --accent: #e11d48;
+  --bg: #0d0d0f;
+  --card: #16161a;
+  --text: #f2f2f4;
+  --muted: #9a9aa3;
+  --accent: #ff2d55;
+  --accent2: #ff6b8a;
   --border: #2a2a30;
-  --radius: 12px;
+  --radius: 14px;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
-  background: var(--bg) url('covers/bg-main.jpg') center/cover fixed no-repeat;
-  background-color: #0a0a0c;
+  background: var(--bg);
   color: var(--text);
-  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Arial, sans-serif;
-  line-height: 1.5;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Noto Sans SC", sans-serif;
+  line-height: 1.4;
   min-height: 100vh;
-}
-/* 背景遮罩，保证文字清晰 */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: rgba(10,10,12,0.82);
-  z-index: -1;
+  padding-bottom: 90px;
 }
 a { color: inherit; text-decoration: none; }
-button { cursor: pointer; font: inherit; border: none; background: none; }
-.container { width: min(1400px, 100%); margin: 0 auto; padding: 0 20px; }
+button { cursor: pointer; font: inherit; border: none; background: none; color: inherit; }
 
 /* Header */
-header {
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(13,13,15,0.95);
+  backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
-  background: rgba(10,10,12,.92);
-  position: sticky; top: 0; z-index: 50;
-  backdrop-filter: blur(16px);
-}
-.nav {
-  min-height: 64px;
+  padding: 10px 14px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 10px;
 }
 .logo {
   font-size: 22px;
   font-weight: 800;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
   color: #fff;
 }
 .logo span { color: var(--accent); }
-.nav-right { display: flex; align-items: center; gap: 10px; }
-.outline-btn, .lang-select {
-  color: var(--text);
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 8px 14px;
-  font-size: 13px;
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
-.lang-select { max-width: 140px; }
+.online-badge {
+  background: #1c1c22;
+  border: 1px solid #2e2e36;
+  border-radius: 20px;
+  padding: 5px 10px;
+  font-size: 12px;
+  color: #a0a0a8;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.online-dot {
+  width: 7px;
+  height: 7px;
+  background: #22c55e;
+  border-radius: 50%;
+  animation: pulse 1.5s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+.lang-select {
+  background: #1c1c22;
+  border: 1px solid #2e2e36;
+  color: #fff;
+  border-radius: 8px;
+  padding: 5px 8px;
+  font-size: 12px;
+}
 
-/* Category pills */
-.category-bar {
-  padding: 18px 0 10px;
+/* Category */
+.cats {
+  padding: 12px 12px 6px;
   overflow-x: auto;
   white-space: nowrap;
   scrollbar-width: none;
+  display: flex;
+  gap: 7px;
 }
-.category-bar::-webkit-scrollbar { display: none; }
-.pills {
-  display: inline-flex;
-  gap: 8px;
-  padding-bottom: 8px;
-}
-.pill {
-  display: inline-block;
-  padding: 8px 16px;
-  border-radius: 999px;
-  background: var(--panel);
-  border: 1px solid var(--border);
-  color: var(--muted);
+.cats::-webkit-scrollbar { display: none; }
+.cat {
+  flex-shrink: 0;
+  padding: 7px 14px;
+  border-radius: 20px;
+  background: #1a1a1f;
+  border: 1px solid #2a2a30;
+  color: #aaa;
   font-size: 13px;
-  transition: all .2s;
-  white-space: nowrap;
+  transition: all .15s;
 }
-.pill:hover, .pill.active {
+.cat.active, .cat:hover {
   background: var(--accent);
   border-color: var(--accent);
   color: #fff;
   font-weight: 600;
 }
 
-/* Toolbar */
-.toolbar {
-  display: flex;
-  gap: 12px;
-  margin: 12px 0 24px;
+/* Search */
+.search-wrap {
+  padding: 6px 12px 10px;
 }
 .search {
-  flex: 1;
-  background: var(--panel);
-  border: 1px solid var(--border);
+  width: 100%;
+  background: #1a1a1f;
+  border: 1px solid #2a2a30;
   border-radius: 10px;
-  padding: 12px 16px;
-  color: var(--text);
-  outline: none;
+  padding: 10px 14px;
+  color: #fff;
   font-size: 14px;
+  outline: none;
 }
 .search:focus { border-color: var(--accent); }
 
-/* Section */
-.section { margin-bottom: 42px; }
-.section-head {
+/* Section title */
+.sec-title {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
-}
-.section-head h2 {
-  font-size: 20px;
+  padding: 4px 14px 8px;
+  font-size: 15px;
   font-weight: 700;
 }
-.count { color: var(--muted); font-size: 13px; }
+.sec-title span { color: var(--muted); font-size: 12px; font-weight: 400; }
 
-/* Grid */
+/* Dense Grid */
 .grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  padding: 0 10px 16px;
 }
-@media (max-width: 1100px) { .grid { grid-template-columns: repeat(3, 1fr); } }
-@media (max-width: 760px)  { .grid { grid-template-columns: repeat(2, 1fr); gap: 12px; } }
-@media (max-width: 420px)  { .grid { grid-template-columns: 1fr; } }
+@media (min-width: 600px) {
+  .grid { grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 0 12px 16px; }
+}
+@media (min-width: 900px) {
+  .grid { grid-template-columns: repeat(4, 1fr); }
+}
+@media (min-width: 1200px) {
+  .grid { grid-template-columns: repeat(5, 1fr); }
+}
 
-/* Card */
+/* Card - 更紧凑 */
 .card {
-  background: var(--panel);
-  border: 1px solid var(--border);
+  background: var(--card);
   border-radius: var(--radius);
   overflow: hidden;
-  transition: transform .2s, border-color .2s;
+  position: relative;
   cursor: pointer;
+  border: 1px solid transparent;
+  transition: transform .15s, border-color .15s;
 }
 .card:hover {
-  transform: translateY(-3px);
-  border-color: #4a4a55;
+  transform: translateY(-2px);
+  border-color: #3a3a42;
 }
 .cover {
   position: relative;
-  aspect-ratio: 16/10;
-  background: #1a1a1e;
+  aspect-ratio: 3/4;          /* 更竖一点，像直播图 */
+  background: #1a1a1f;
   overflow: hidden;
 }
 .cover img {
@@ -167,451 +181,410 @@ header {
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform .3s;
 }
-.card:hover .cover img { transform: scale(1.05); }
 .cover-placeholder {
-  width: 100%; height: 100%;
-  display: grid; place-items: center;
-  color: #666; font-size: 13px;
-  background: linear-gradient(135deg, #1e1e24, #121216);
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  color: #555;
+  font-size: 12px;
+  background: #1a1a1f;
+}
+.live-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: rgba(0,0,0,0.7);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 7px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.live-dot {
+  width: 6px;
+  height: 6px;
+  background: #22c55e;
+  border-radius: 50%;
 }
 .duration {
   position: absolute;
-  bottom: 8px; right: 8px;
-  background: rgba(0,0,0,.85);
+  bottom: 8px;
+  right: 8px;
+  background: rgba(0,0,0,0.75);
   color: #fff;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
-  padding: 3px 7px;
+  padding: 2px 6px;
   border-radius: 4px;
 }
-.card-body { padding: 12px 14px 14px; }
-.card h3 {
-  font-size: 14px;
+.card-info {
+  padding: 8px 10px 10px;
+}
+.card-info h3 {
+  font-size: 13px;
   font-weight: 600;
-  line-height: 1.4;
-  margin-bottom: 8px;
+  line-height: 1.3;
+  margin-bottom: 4px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
-.meta {
+.card-meta {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  font-size: 12px;
+  align-items: center;
+  font-size: 11px;
   color: var(--muted);
 }
-.views { display: flex; align-items: center; gap: 4px; }
-.action-btn {
+.dl-btn {
   background: var(--accent);
   color: #fff;
   border-radius: 6px;
-  padding: 6px 12px;
-  font-size: 12px;
+  padding: 4px 9px;
+  font-size: 11px;
   font-weight: 700;
 }
-.action-btn:hover { filter: brightness(1.1); }
+
+/* 大号底部下载条 */
+.bottom-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 60;
+  padding: 12px 16px 18px;
+  background: linear-gradient(to top, rgba(13,13,15,0.98) 60%, transparent);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.big-dl {
+  width: 100%;
+  max-width: 420px;
+  background: linear-gradient(90deg, #ff2d55, #ff6b8a);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  padding: 15px 20px;
+  font-size: 16px;
+  font-weight: 800;
+  box-shadow: 0 6px 20px rgba(255,45,85,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.big-dl:active { transform: scale(0.98); }
+.bottom-tip {
+  font-size: 11px;
+  color: #888;
+}
 
 /* Empty */
 .empty {
   display: none;
-  padding: 60px 20px;
   text-align: center;
-  color: var(--muted);
-  border: 1px dashed var(--border);
-  border-radius: var(--radius);
+  padding: 50px 20px;
+  color: #666;
 }
 
-/* Footer */
-footer {
-  border-top: 1px solid var(--border);
-  padding: 28px 0;
-  margin-top: 50px;
-  color: var(--muted);
-  font-size: 12px;
-  text-align: center;
-  background: rgba(10,10,12,.7);
-}
-
-/* 浮动下载按钮 */
-.float-btn {
-  position: fixed;
-  right: 24px;
-  bottom: 28px;
-  z-index: 100;
-  background: linear-gradient(135deg, #e11d48, #be123c);
-  color: #fff;
-  border: none;
-  border-radius: 50px;
-  padding: 14px 22px;
-  font-size: 14px;
-  font-weight: 700;
-  box-shadow: 0 8px 24px rgba(225,29,72,0.45);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  transition: transform .2s, box-shadow .2s;
-}
-.float-btn:hover {
-  transform: translateY(-3px) scale(1.03);
-  box-shadow: 0 12px 28px rgba(225,29,72,0.55);
-}
-.float-btn span { font-size: 18px; }
-
-/* Dialogs */
+/* Dialog */
 dialog {
-  width: min(860px, calc(100% - 24px));
-  max-height: 90vh;
+  width: min(400px, calc(100% - 24px));
+  max-height: 80vh;
+  border: none;
+  border-radius: 16px;
+  background: #16161a;
+  color: #fff;
   padding: 0;
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  color: var(--text);
 }
-dialog::backdrop { background: rgba(0,0,0,.8); backdrop-filter: blur(4px); }
-.player-top {
+dialog::backdrop { background: rgba(0,0,0,0.75); }
+.dlg-head {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 14px 18px;
-  border-bottom: 1px solid var(--border);
+  padding: 14px 16px;
+  border-bottom: 1px solid #2a2a30;
+  font-weight: 700;
 }
-.player-top h3 { font-size: 15px; }
-.close-btn {
-  border: 1px solid var(--border);
-  color: var(--text);
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-size: 14px;
-}
-.player-video {
-  display: block;
-  width: 100%;
-  max-height: 60vh;
-  background: #000;
-}
-.player-description {
-  padding: 16px 18px 20px;
-  color: var(--muted);
-  font-size: 14px;
-  line-height: 1.7;
-  white-space: pre-line;
-}
-.download-list {
-  padding: 0 18px 20px;
+.dlg-close {
+  background: #2a2a30;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
   display: grid;
-  gap: 10px;
+  place-items: center;
+  font-size: 14px;
 }
-.download-item {
+.dlg-list {
+  padding: 12px 16px 20px;
+  max-height: 60vh;
+  overflow-y: auto;
+  display: grid;
+  gap: 8px;
+}
+.dlg-item {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  padding: 12px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-}
-.download-item a {
-  color: var(--accent);
-  font-weight: 600;
+  align-items: center;
+  padding: 10px 12px;
+  background: #1c1c22;
+  border-radius: 10px;
   font-size: 13px;
+}
+.dlg-item button {
+  background: var(--accent);
+  color: #fff;
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: 700;
 }
 </style>
 </head>
 <body>
-<header>
-  <div class="container nav">
-    <a class="logo" href="#">WQJ</a>
-    <div class="nav-right">
-      <button class="outline-btn" id="downloadCenter" type="button" data-i18n="downloadCenter">下载</button>
-      <select id="languageSelect" class="lang-select" aria-label="Language">
-        <option value="auto">🌐 自动</option>
-        <option value="zh-CN">简体中文</option>
-        <option value="zh-TW">繁體中文</option>
-        <option value="en">English</option>
-        <option value="ja">日本語</option>
-        <option value="ko">한국어</option>
-      </select>
+
+<!-- Header -->
+<div class="header">
+  <div class="logo">WQ<span>J</span></div>
+  <div class="header-right">
+    <div class="online-badge">
+      <div class="online-dot"></div>
+      <span id="onlineCount">Online 14,340</span>
     </div>
+    <select id="languageSelect" class="lang-select">
+      <option value="auto">🌐</option>
+      <option value="zh-CN">简中</option>
+      <option value="zh-TW">繁中</option>
+      <option value="en">EN</option>
+      <option value="ja">日本語</option>
+      <option value="ko">한국어</option>
+    </select>
   </div>
-</header>
+</div>
 
-<main class="container">
-  <!-- 分类 -->
-  <div class="category-bar">
-    <div class="pills" id="pills">
-      <button class="pill active" data-category="all" data-i18n="all">全部</button>
-      <button class="pill" data-category="europe" data-i18n="europe">欧洲和美洲</button>
-      <button class="pill" data-category="asian" data-i18n="asian">亚洲</button>
-      <button class="pill" data-category="longlegs" data-i18n="longlegs">长腿</button>
-      <button class="pill" data-category="homemade" data-i18n="homemade">自制</button>
-      <button class="pill" data-category="threesome" data-i18n="threesome">三人行</button>
-      <button class="pill" data-category="lesbian" data-i18n="lesbian">女同性恋</button>
-      <button class="pill" data-category="anal" data-i18n="anal">肛门</button>
-      <button class="pill" data-category="ai" data-i18n="ai">AI视频</button>
-      <button class="pill" data-category="anime" data-i18n="anime">动漫</button>
-      <button class="pill" data-category="live" data-i18n="live">直播</button>
-    </div>
+<!-- Categories -->
+<div class="cats" id="cats">
+  <button class="cat active" data-category="all">全部</button>
+  <button class="cat" data-category="live">直播</button>
+  <button class="cat" data-category="ai">AI视频</button>
+  <button class="cat" data-category="anime">动漫</button>
+  <button class="cat" data-category="europe">欧美</button>
+  <button class="cat" data-category="asian">亚洲</button>
+  <button class="cat" data-category="homemade">自制</button>
+  <button class="cat" data-category="lesbian">女同</button>
+  <button class="cat" data-category="threesome">3P</button>
+  <button class="cat" data-category="anal">肛门</button>
+  <button class="cat" data-category="longlegs">长腿</button>
+</div>
+
+<!-- Search -->
+<div class="search-wrap">
+  <input class="search" id="searchInput" type="search" placeholder="搜索标题...">
+</div>
+
+<!-- Content -->
+<div id="content"></div>
+<div class="empty" id="empty">没有找到视频</div>
+
+<!-- 底部大下载按钮 -->
+<div class="bottom-bar">
+  <button class="big-dl" id="bigDownload">
+    ↓ 下载立即免费观看 · 免登录
+  </button>
+  <div class="bottom-tip">100% 免费 · 无需注册 · 无月费</div>
+</div>
+
+<!-- 下载列表弹窗 -->
+<dialog id="dlDialog">
+  <div class="dlg-head">
+    <span>下载中心</span>
+    <button class="dlg-close" id="closeDlg">✕</button>
   </div>
-
-  <div class="toolbar">
-    <input class="search" id="searchInput" type="search" data-i18n-placeholder="search" placeholder="搜索标题..." aria-label="Search">
-  </div>
-
-  <div id="sections"></div>
-  <div class="empty" id="emptyState" data-i18n="empty">没有找到视频</div>
-</main>
-
-<footer>
-  <div class="container">
-    WQJ © <span id="year"></span> · <span data-i18n="footer">免费观看所有视频 · 免登录 · 仅限18+</span>
-  </div>
-</footer>
-
-<!-- 右下角浮动按钮 -->
-<button class="float-btn" id="floatDownload" type="button">
-  <span>⬇</span>
-  <span data-i18n="floatBtn">下载立即免费观看 · 免登录</span>
-</button>
-
-<dialog id="downloadsDialog">
-  <div class="player-top">
-    <h3 data-i18n="downloadCenter">下载中心</h3>
-    <button class="close-btn" id="closeDownloads" type="button">✕</button>
-  </div>
-  <div class="player-description" data-i18n="downloadInfo">点击下方任意视频即可免费下载观看，无需登录。</div>
-  <div class="download-list" id="downloadList"></div>
+  <div class="dlg-list" id="dlgList"></div>
 </dialog>
 
 <script>
-/* =========================================================
-   1. 把 DOWNLOAD_API_BASE 改成你的真实下载 API
-   2. 封面图放到 covers/ 文件夹，按 cover-001.jpg 这种命名
-   3. 背景图命名为 covers/bg-main.jpg（没有也不影响）
-   ========================================================= */
-const DOWNLOAD_API_BASE = "";   // ← 填你的 API，例如 https://xxx.com/api/dl?id=
+const DOWNLOAD_API_BASE = "";   // ← 在这里填你的下载 API
 
 const VIDEO_LIBRARY = [
-  // 热门 / 欧洲美洲
-  {id:"v001", category:"europe", title:{"zh-CN":"我和老板的妻子","en":"I Fucked My Boss Wife","zh-TW":"我和老闆的妻子","ja":"ボスの妻と","ko":"보스 아내와"}, description:{"zh-CN":"免费观看所有视频","en":"Free to watch all videos","zh-TW":"免費觀看所有視頻","ja":"すべての動画を無料視聴","ko":"모든 영상 무료 시청"}, cover:"covers/cover-001.jpg", src:"", duration:"10:51", views:"5.1K", downloadName:"v001.mp4"},
-  {id:"v002", category:"homemade", title:{"zh-CN":"妻子总是饥渴难耐","en":"My Wife Always Has a Boner","zh-TW":"妻子總是飢渴難耐","ja":"妻はいつも興奮","ko":"아내는 항상 흥분"}, description:{"zh-CN":"免费观看所有视频","en":"Free to watch all videos","zh-TW":"免費觀看所有視頻","ja":"すべての動画を無料視聴","ko":"모든 영상 무료 시청"}, cover:"covers/cover-002.jpg", src:"", duration:"7:15", views:"16.9K", downloadName:"v002.mp4"},
-  {id:"v003", category:"asian", title:{"zh-CN":"从乳头到阴蒂的舔舐","en":"Nipple Licking to Clit Licking","zh-TW":"從乳頭到陰蒂的舔舐","ja":"乳首からクリまで","ko":"젖꼭지부터 클리까지"}, description:{"zh-CN":"免费观看所有视频","en":"Free to watch all videos","zh-TW":"免費觀看所有視頻","ja":"すべての動画を無料視聴","ko":"모든 영상 무료 시청"}, cover:"covers/cover-003.jpg", src:"", duration:"4:00", views:"18.2K", downloadName:"v003.mp4"},
-  {id:"v004", category:"lesbian", title:{"zh-CN":"黑发姐妹花双人秀","en":"Parasite Lesbian Brunette","zh-TW":"黑髮姐妹花雙人秀","ja":"黒髪レズビアン","ko":"검은 머리 레즈비언"}, description:{"zh-CN":"免费观看所有视频","en":"Free to watch all videos","zh-TW":"免費觀看所有視頻","ja":"すべての動画を無料視聴","ko":"모든 영상 무료 시청"}, cover:"covers/cover-004.jpg", src:"", duration:"10:51", views:"8.3K", downloadName:"v004.mp4"},
-  {id:"v005", category:"europe", title:{"zh-CN":"圣诞特别篇","en":"Xmas Fuck with Tru Kait","zh-TW":"聖誕特別篇","ja":"クリスマス特別","ko":"크리스마스 스페셜"}, description:{"zh-CN":"免费观看所有视频","en":"Free to watch all videos","zh-TW":"免費觀看所有視頻","ja":"すべての動画を無料視聴","ko":"모든 영상 무료 시청"}, cover:"covers/cover-005.jpg", src:"", duration:"11:17", views:"248K", downloadName:"v005.mp4"},
-  {id:"v006", category:"threesome", title:{"zh-CN":"两个饥渴女孩的早晨3P","en":"Two Horny Girls Morning Threesome","zh-TW":"兩個飢渴女孩的早晨3P","ja":"朝の3P","ko":"아침 쓰리섬"}, description:{"zh-CN":"免费观看所有视频","en":"Free to watch all videos","zh-TW":"免費觀看所有視頻","ja":"すべての動画を無料視聴","ko":"모든 영상 무료 시청"}, cover:"covers/cover-006.jpg", src:"", duration:"15:07", views:"19.1K", downloadName:"v006.mp4"},
-  {id:"v007", category:"anal", title:{"zh-CN":"Sasha Paige 双插","en":"Sasha Paige DP Action","zh-TW":"Sasha Paige 雙插","ja":"サシャ・ペイジ DP","ko":"사샤 페이지 DP"}, description:{"zh-CN":"免费观看所有视频","en":"Free to watch all videos","zh-TW":"免費觀看所有視頻","ja":"すべての動画を無料視聴","ko":"모든 영상 무료 시청"}, cover:"covers/cover-007.jpg", src:"", duration:"38:03", views:"713K", downloadName:"v007.mp4"},
-  {id:"v008", category:"longlegs", title:{"zh-CN":"红衣长腿金发女郎","en":"Long Legs Blonde in Red","zh-TW":"紅衣長腿金髮女郎","ja":"赤いロングレッグ","ko":"빨간 롱레그 금발"}, description:{"zh-CN":"免费观看所有视频","en":"Free to watch all videos","zh-TW":"免費觀看所有視頻","ja":"すべての動画を無料視聴","ko":"모든 영상 무료 시청"}, cover:"covers/cover-008.jpg", src:"", duration:"12:40", views:"42.6K", downloadName:"v008.mp4"},
-  {id:"v009", category:"asian", title:{"zh-CN":"日本无码成熟女性","en":"Japanese Uncensored Mature","zh-TW":"日本無碼成熟女性","ja":"日本無修正熟女","ko":"일본 무수정 숙녀"}, description:{"zh-CN":"免费观看所有视频","en":"Free to watch all videos","zh-TW":"免費觀看所有視頻","ja":"すべての動画を無料視聴","ko":"모든 영상 무료 시청"}, cover:"covers/cover-009.jpg", src:"", duration:"22:15", views:"89.3K", downloadName:"v009.mp4"},
-  {id:"v010", category:"homemade", title:{"zh-CN":"业余情侣真实高潮","en":"Amateur Couple Real Orgasm","zh-TW":"業餘情侶真實高潮","ja":"素人カップル本気イキ","ko":"아마추어 커플 진짜 오르가즘"}, description:{"zh-CN":"免费观看所有视频","en":"Free to watch all videos","zh-TW":"免費觀看所有視頻","ja":"すべての動画を無料視聴","ko":"모든 영상 무료 시청"}, cover:"covers/cover-010.jpg", src:"", duration:"9:28", views:"31.7K", downloadName:"v010.mp4"},
-  {id:"v011", category:"europe", title:{"zh-CN":"老板妻子的下午秘密","en":"Boss Wife Afternoon Affair","zh-TW":"老闆妻子的下午秘密","ja":"ボスの妻の午後","ko":"보스 아내의 오후"}, description:{"zh-CN":"免费观看所有视频","en":"Free to watch all videos","zh-TW":"免費觀看所有視頻","ja":"すべての動画を無料視聴","ko":"모든 영상 무료 시청"}, cover:"covers/cover-011.jpg", src:"", duration:"14:02", views:"67.4K", downloadName:"v011.mp4"},
-  {id:"v012", category:"lesbian", title:{"zh-CN":"红色内衣女女","en":"Red Lingerie Girl on Girl","zh-TW":"紅色內衣女女","ja":"赤いランジェリーレズ","ko":"빨간 란제리 레즈"}, description:{"zh-CN":"免费观看所有视频","en":"Free to watch all videos","zh-TW":"免費觀看所有視頻","ja":"すべての動画を無料視聴","ko":"모든 영상 무료 시청"}, cover:"covers/cover-012.jpg", src:"", duration:"8:55", views:"25.8K", downloadName:"v012.mp4"},
+  // 直播 (更密集展示)
+  {id:"v015", category:"live", title:{"zh-CN":"直播回放精选","en":"Live Replay"}, cover:"covers/cover-015.jpg", duration:"45:00", views:"56.8K", live:true},
+  {id:"v024", category:"live", title:{"zh-CN":"午夜直播专场","en":"Midnight Live"}, cover:"covers/cover-024.jpg", duration:"38:20", views:"72.4K", live:true},
+  {id:"v025", category:"live", title:{"zh-CN":"情侣直播实录","en":"Couple Live"}, cover:"covers/cover-025.jpg", duration:"52:10", views:"91.3K", live:true},
+  {id:"v026", category:"live", title:{"zh-CN":"主播私房直播","en":"Private Live"}, cover:"covers/cover-026.jpg", duration:"41:55", views:"68.7K", live:true},
+  {id:"v027", category:"live", title:{"zh-CN":"热门直播精华","en":"Popular Live"}, cover:"covers/cover-027.jpg", duration:"33:40", views:"105K", live:true},
+  {id:"v028", category:"live", title:{"zh-CN":"Yui Takahashi 直播","en":"Yui Live"}, cover:"covers/cover-028.jpg", duration:"28:15", views:"48.2K", live:true},
+  {id:"v029", category:"live", title:{"zh-CN":"Rina Sato 在线","en":"Rina Live"}, cover:"covers/cover-029.jpg", duration:"35:40", views:"61.9K", live:true},
+  {id:"v030", category:"live", title:{"zh-CN":"Miu Tanaka 直播中","en":"Miu Live"}, cover:"covers/cover-030.jpg", duration:"22:50", views:"39.4K", live:true},
 
-  // AI 视频
-  {id:"v013", category:"ai", title:{"zh-CN":"AI生成虚拟女友","en":"AI Virtual Girlfriend","zh-TW":"AI生成虛擬女友","ja":"AI仮想彼女","ko":"AI 가상 여친"}, description:{"zh-CN":"免费观看所有视频","en":"Free to watch all videos","zh-TW":"免費觀看所有視頻","ja":"すべての動画を無料視聴","ko":"모든 영상 무료 시청"}, cover:"covers/cover-013.jpg", src:"", duration:"6:40", views:"112K", downloadName:"v013.mp4"},
+  // AI
+  {id:"v013", category:"ai", title:{"zh-CN":"AI生成虚拟女友","en":"AI Girlfriend"}, cover:"covers/cover-013.jpg", duration:"6:40", views:"112K"},
+  {id:"v016", category:"ai", title:{"zh-CN":"AI完美身材模特","en":"AI Perfect Body"}, cover:"covers/cover-016.jpg", duration:"8:15", views:"87.3K"},
+  {id:"v017", category:"ai", title:{"zh-CN":"AI办公室幻想","en":"AI Office"}, cover:"covers/cover-017.jpg", duration:"11:20", views:"64.8K"},
+  {id:"v018", category:"ai", title:{"zh-CN":"AI浴室私密","en":"AI Bathroom"}, cover:"covers/cover-018.jpg", duration:"7:55", views:"93.1K"},
+  {id:"v019", category:"ai", title:{"zh-CN":"AI夜店激情","en":"AI Nightclub"}, cover:"covers/cover-019.jpg", duration:"9:40", views:"71.5K"},
+  {id:"v031", category:"ai", title:{"zh-CN":"AI 黑丝长腿","en":"AI Long Legs"}, cover:"covers/cover-031.jpg", duration:"10:05", views:"58.7K"},
 
   // 动漫
-  {id:"v014", category:"anime", title:{"zh-CN":"二次元动漫特辑","en":"2D Anime Special","zh-TW":"二次元動漫特輯","ja":"二次元アニメ特集","ko":"2D 애니 스페셜"}, description:{"zh-CN":"免费观看所有视频","en":"Free to watch all videos","zh-TW":"免費觀看所有視頻","ja":"すべての動画を無料視聴","ko":"모든 영상 무료 시청"}, cover:"covers/cover-014.jpg", src:"", duration:"18:20", views:"203K", downloadName:"v014.mp4"},
+  {id:"v014", category:"anime", title:{"zh-CN":"二次元动漫特辑","en":"2D Anime"}, cover:"covers/cover-014.jpg", duration:"18:20", views:"203K"},
+  {id:"v020", category:"anime", title:{"zh-CN":"二次元女仆侍奉","en":"2D Maid"}, cover:"covers/cover-020.jpg", duration:"14:35", views:"156K"},
+  {id:"v021", category:"anime", title:{"zh-CN":"校园动漫学姐","en":"School Anime"}, cover:"covers/cover-021.jpg", duration:"16:10", views:"128K"},
+  {id:"v022", category:"anime", title:{"zh-CN":"幻想世界精灵","en":"Fantasy Elf"}, cover:"covers/cover-022.jpg", duration:"12:45", views:"97.6K"},
+  {id:"v023", category:"anime", title:{"zh-CN":"机甲少女特辑","en":"Mecha Girl"}, cover:"covers/cover-023.jpg", duration:"20:05", views:"84.2K"},
+  {id:"v032", category:"anime", title:{"zh-CN":"猫耳娘特辑","en":"Catgirl"}, cover:"covers/cover-032.jpg", duration:"15:30", views:"76.3K"},
 
-  // 直播
-  {id:"v015", category:"live", title:{"zh-CN":"直播回放精选","en":"Live Replay Highlights","zh-TW":"直播回放精選","ja":"ライブ再生ハイライト","ko":"라이브 다시보기"}, description:{"zh-CN":"免费观看所有视频","en":"Free to watch all videos","zh-TW":"免費觀看所有視頻","ja":"すべての動画を無料視聴","ko":"모든 영상 무료 시청"}, cover:"covers/cover-015.jpg", src:"", duration:"45:00", views:"56.8K", downloadName:"v015.mp4"}
+  // 其他分类
+  {id:"v001", category:"europe", title:{"zh-CN":"我和老板的妻子","en":"Boss Wife"}, cover:"covers/cover-001.jpg", duration:"10:51", views:"5.1K"},
+  {id:"v002", category:"homemade", title:{"zh-CN":"妻子总是饥渴难耐","en":"Horny Wife"}, cover:"covers/cover-002.jpg", duration:"7:15", views:"16.9K"},
+  {id:"v003", category:"asian", title:{"zh-CN":"从乳头到阴蒂","en":"Nipple to Clit"}, cover:"covers/cover-003.jpg", duration:"4:00", views:"18.2K"},
+  {id:"v004", category:"lesbian", title:{"zh-CN":"黑发姐妹花","en":"Brunette Lesbians"}, cover:"covers/cover-004.jpg", duration:"10:51", views:"8.3K"},
+  {id:"v005", category:"europe", title:{"zh-CN":"圣诞特别篇","en":"Xmas Special"}, cover:"covers/cover-005.jpg", duration:"11:17", views:"248K"},
+  {id:"v006", category:"threesome", title:{"zh-CN":"两个饥渴女孩3P","en":"Threesome"}, cover:"covers/cover-006.jpg", duration:"15:07", views:"19.1K"},
+  {id:"v007", category:"anal", title:{"zh-CN":"Sasha Paige 双插","en":"DP Action"}, cover:"covers/cover-007.jpg", duration:"38:03", views:"713K"},
+  {id:"v008", category:"longlegs", title:{"zh-CN":"红衣长腿金发","en":"Long Legs Blonde"}, cover:"covers/cover-008.jpg", duration:"12:40", views:"42.6K"},
+  {id:"v009", category:"asian", title:{"zh-CN":"日本无码成熟","en":"JP Mature"}, cover:"covers/cover-009.jpg", duration:"22:15", views:"89.3K"},
+  {id:"v010", category:"homemade", title:{"zh-CN":"业余情侣高潮","en":"Amateur Couple"}, cover:"covers/cover-010.jpg", duration:"9:28", views:"31.7K"},
+  {id:"v011", category:"europe", title:{"zh-CN":"老板妻子的秘密","en":"Boss Wife Secret"}, cover:"covers/cover-011.jpg", duration:"14:02", views:"67.4K"},
+  {id:"v012", category:"lesbian", title:{"zh-CN":"红色内衣女女","en":"Red Lingerie"}, cover:"covers/cover-012.jpg", duration:"8:55", views:"25.8K"}
 ];
 
-/* 多语言文案 */
 const I18N = {
-  "zh-CN": {
-    downloadCenter: "下载",
-    all: "全部", europe: "欧洲和美洲", asian: "亚洲", longlegs: "长腿",
-    homemade: "自制", threesome: "三人行", lesbian: "女同性恋", anal: "肛门",
-    ai: "AI视频", anime: "动漫", live: "直播",
-    search: "搜索标题...", empty: "没有找到视频",
-    footer: "免费观看所有视频 · 免登录 · 仅限18+",
-    floatBtn: "下载立即免费观看 · 免登录",
-    downloadInfo: "点击下方任意视频即可免费下载观看，无需登录。",
-    popular: "热门视频", aiSection: "AI视频", animeSection: "动漫", liveSection: "直播"
-  },
-  "zh-TW": {
-    downloadCenter: "下載",
-    all: "全部", europe: "歐洲和美洲", asian: "亞洲", longlegs: "長腿",
-    homemade: "自製", threesome: "三人行", lesbian: "女同性戀", anal: "肛門",
-    ai: "AI視頻", anime: "動漫", live: "直播",
-    search: "搜尋標題...", empty: "找不到視頻",
-    footer: "免費觀看所有視頻 · 免登入 · 僅限18+",
-    floatBtn: "下載立即免費觀看 · 免登入",
-    downloadInfo: "點擊下方任意視頻即可免費下載觀看，無需登入。",
-    popular: "熱門視頻", aiSection: "AI視頻", animeSection: "動漫", liveSection: "直播"
-  },
-  en: {
-    downloadCenter: "Download",
-    all: "All", europe: "Europe & America", asian: "Asian", longlegs: "Long Legs",
-    homemade: "Homemade", threesome: "Threesome", lesbian: "Lesbian", anal: "Anal",
-    ai: "AI Videos", anime: "Anime", live: "Live",
-    search: "Search titles...", empty: "No videos found",
-    footer: "Free to watch all videos · No login · 18+ only",
-    floatBtn: "Download · Watch Free · No Login",
-    downloadInfo: "Click any video below to download and watch for free. No login required.",
-    popular: "Popular Videos", aiSection: "AI Videos", animeSection: "Anime", liveSection: "Live"
-  },
-  ja: {
-    downloadCenter: "ダウンロード",
-    all: "すべて", europe: "欧米", asian: "アジア", longlegs: "美脚",
-    homemade: "ハメ撮り", threesome: "3P", lesbian: "レズ", anal: "アナル",
-    ai: "AI動画", anime: "アニメ", live: "ライブ",
-    search: "タイトル検索...", empty: "動画が見つかりません",
-    footer: "すべての動画を無料視聴 · ログイン不要 · 18歳以上",
-    floatBtn: "ダウンロードして無料視聴 · ログイン不要",
-    downloadInfo: "下の動画をクリックすると無料でダウンロードできます。ログイン不要。",
-    popular: "人気動画", aiSection: "AI動画", animeSection: "アニメ", liveSection: "ライブ"
-  },
-  ko: {
-    downloadCenter: "다운로드",
-    all: "전체", europe: "유럽 & 미국", asian: "아시아", longlegs: "롱레그",
-    homemade: "홈메이드", threesome: "쓰리섬", lesbian: "레즈비언", anal: "애널",
-    ai: "AI 영상", anime: "애니", live: "라이브",
-    search: "제목 검색...", empty: "영상을 찾을 수 없습니다",
-    footer: "모든 영상 무료 시청 · 로그인 불필요 · 18+",
-    floatBtn: "다운로드 후 무료 시청 · 로그인 불필요",
-    downloadInfo: "아래 영상을 클릭하면 무료로 다운로드할 수 있습니다. 로그인 불필요.",
-    popular: "인기 영상", aiSection: "AI 영상", animeSection: "애니", liveSection: "라이브"
-  }
+  "zh-CN": { all:"全部", live:"直播", ai:"AI视频", anime:"动漫", europe:"欧美", asian:"亚洲", homemade:"自制", lesbian:"女同", threesome:"3P", anal:"肛门", longlegs:"长腿", search:"搜索标题...", empty:"没有找到视频", dl:"下载", big:"↓ 下载立即免费观看 · 免登录", tip:"100% 免费 · 无需注册 · 无月费", online:"在线 ", center:"下载中心" },
+  "zh-TW": { all:"全部", live:"直播", ai:"AI視頻", anime:"動漫", europe:"歐美", asian:"亞洲", homemade:"自製", lesbian:"女同", threesome:"3P", anal:"肛門", longlegs:"長腿", search:"搜尋標題...", empty:"找不到視頻", dl:"下載", big:"↓ 下載立即免費觀看 · 免登入", tip:"100% 免費 · 無需註冊 · 無月費", online:"在線 ", center:"下載中心" },
+  en: { all:"All", live:"Live", ai:"AI", anime:"Anime", europe:"Western", asian:"Asian", homemade:"Homemade", lesbian:"Lesbian", threesome:"3P", anal:"Anal", longlegs:"Long Legs", search:"Search...", empty:"No videos", dl:"Download", big:"↓ Download · Watch Free · No Login", tip:"100% Free · No registration · No fee", online:"Online ", center:"Downloads" },
+  ja: { all:"すべて", live:"ライブ", ai:"AI", anime:"アニメ", europe:"欧米", asian:"アジア", homemade:"素人", lesbian:"レズ", threesome:"3P", anal:"アナル", longlegs:"美脚", search:"検索...", empty:"動画なし", dl:"ダウンロード", big:"↓ ダウンロードして無料視聴", tip:"100%無料 · 登録不要", online:"オンライン ", center:"ダウンロード" },
+  ko: { all:"전체", live:"라이브", ai:"AI", anime:"애니", europe:"서양", asian:"아시아", homemade:"홈메이드", lesbian:"레즈", threesome:"쓰리섬", anal:"애널", longlegs:"롱레그", search:"검색...", empty:"영상 없음", dl:"다운로드", big:"↓ 다운로드 후 무료 시청", tip:"100% 무료 · 가입 불필요", online:"온라인 ", center:"다운로드" }
 };
 
 let currentCategory = "all";
 let currentLanguage = "zh-CN";
-
 const $ = s => document.querySelector(s);
 
-function escapeHTML(v) {
-  return String(v ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function t(key) { return I18N[currentLanguage]?.[key] || I18N["zh-CN"][key] || key; }
+function loc(obj) {
+  if (typeof obj === "string") return obj;
+  return obj?.[currentLanguage] || obj?.["zh-CN"] || obj?.en || Object.values(obj||{})[0] || "";
 }
-
-function normalizeLanguage(raw) {
+function normalizeLang(raw) {
   if (!raw) return "zh-CN";
-  const lower = raw.toLowerCase().replace("_", "-");
-  if (lower === "zh-tw" || lower === "zh-hk" || lower === "zh-hant") return "zh-TW";
-  if (lower.startsWith("zh")) return "zh-CN";
-  if (lower.startsWith("ja")) return "ja";
-  if (lower.startsWith("ko")) return "ko";
-  if (lower.startsWith("en")) return "en";
+  const l = raw.toLowerCase();
+  if (l.includes("zh-tw") || l.includes("zh-hk") || l.includes("hant")) return "zh-TW";
+  if (l.startsWith("zh")) return "zh-CN";
+  if (l.startsWith("ja")) return "ja";
+  if (l.startsWith("ko")) return "ko";
+  if (l.startsWith("en")) return "en";
   return "zh-CN";
 }
-
-function detectLanguage() {
-  const langs = navigator.languages?.length ? navigator.languages : [navigator.language || "zh-CN"];
-  for (const l of langs) {
-    const n = normalizeLanguage(l);
+function detectLang() {
+  const list = navigator.languages || [navigator.language || "zh-CN"];
+  for (const l of list) {
+    const n = normalizeLang(l);
     if (I18N[n]) return n;
   }
   return "zh-CN";
 }
-
-function t(key) {
-  return I18N[currentLanguage]?.[key] || I18N["zh-CN"][key] || key;
-}
-
-function localizedText(value) {
-  if (typeof value === "string") return value;
-  if (!value || typeof value !== "object") return "";
-  return value[currentLanguage] || value["zh-CN"] || value.en || Object.values(value)[0] || "";
-}
-
-function setLanguage(choice, save = true) {
-  currentLanguage = choice === "auto" ? detectLanguage() : normalizeLanguage(choice);
+function setLang(choice) {
+  currentLanguage = choice === "auto" ? detectLang() : normalizeLang(choice);
   document.documentElement.lang = currentLanguage;
-  if (save) try { localStorage.setItem("preferred-language", choice); } catch(e){}
+  try { localStorage.setItem("wqj-lang", choice); } catch(e){}
   $("#languageSelect").value = choice;
-
-  // 更新所有带 data-i18n 的元素
-  document.querySelectorAll("[data-i18n]").forEach(el => {
-    el.textContent = t(el.dataset.i18n);
+  // 更新分类文字
+  document.querySelectorAll(".cat").forEach(btn => {
+    const key = btn.dataset.category;
+    btn.textContent = t(key);
   });
-  document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
-    el.placeholder = t(el.dataset.i18nPlaceholder);
-  });
-  renderVideos();
+  $("#searchInput").placeholder = t("search");
+  $("#empty").textContent = t("empty");
+  $(".big-dl").textContent = t("big");
+  $(".bottom-tip").textContent = t("tip");
+  $("#onlineCount").textContent = t("online") + "14,340";
+  render();
 }
 
-function visibleVideos() {
+function visible() {
   const q = $("#searchInput").value.trim().toLowerCase();
   return VIDEO_LIBRARY.filter(v => {
     const catOk = currentCategory === "all" || v.category === currentCategory;
-    const text = (localizedText(v.title) + " " + localizedText(v.description)).toLowerCase();
+    const text = (loc(v.title) + " " + v.category).toLowerCase();
     return catOk && text.includes(q);
   });
 }
 
-function createCard(video) {
-  const title = escapeHTML(localizedText(video.title));
-  const cover = escapeHTML(video.cover || "");
+function createCard(v) {
+  const title = loc(v.title);
+  const cover = v.cover || "";
   return `
-    <article class="card" data-id="${escapeHTML(video.id)}">
-      <div class="cover">
-        ${cover ? `<img src="${cover}" alt="${title}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'"><div class="cover-placeholder" style="display:none">无封面</div>` : `<div class="cover-placeholder">无封面</div>`}
-        <span class="duration">${escapeHTML(video.duration || "")}</span>
+  <article class="card" data-id="${v.id}">
+    <div class="cover">
+      ${cover ? `<img src="${cover}" alt="${title}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'"><div class="cover-placeholder" style="display:none">无封面</div>` : `<div class="cover-placeholder">无封面</div>`}
+      ${v.live ? `<div class="live-badge"><div class="live-dot"></div>LIVE</div>` : ""}
+      <div class="duration">${v.duration || ""}</div>
+    </div>
+    <div class="card-info">
+      <h3>${title}</h3>
+      <div class="card-meta">
+        <span>👁 ${v.views || "0"}</span>
+        <button class="dl-btn" data-id="${v.id}">${t("dl")}</button>
       </div>
-      <div class="card-body">
-        <h3>${title}</h3>
-        <div class="meta">
-          <span class="views">👁 ${escapeHTML(video.views || "0")}</span>
-          <button class="action-btn" type="button" data-action="download" data-id="${escapeHTML(video.id)}">${t("downloadCenter")}</button>
-        </div>
-      </div>
-    </article>`;
+    </div>
+  </article>`;
 }
 
-function renderVideos() {
-  const videos = visibleVideos();
-  const sections = $("#sections");
-  sections.innerHTML = "";
-
-  if (!videos.length) {
-    $("#emptyState").style.display = "block";
+function render() {
+  const list = visible();
+  const box = $("#content");
+  box.innerHTML = "";
+  if (!list.length) {
+    $("#empty").style.display = "block";
     return;
   }
-  $("#emptyState").style.display = "none";
+  $("#empty").style.display = "none";
 
-  // 按大类分组显示
-  const groups = [
-    { key: "popular", cats: ["europe","asian","longlegs","homemade","threesome","lesbian","anal"], title: t("popular") },
-    { key: "ai", cats: ["ai"], title: t("aiSection") },
-    { key: "anime", cats: ["anime"], title: t("animeSection") },
-    { key: "live", cats: ["live"], title: t("liveSection") }
+  // 按优先级分组，尽量塞满
+  const order = [
+    {cat: "live", title: t("live")},
+    {cat: "ai", title: t("ai")},
+    {cat: "anime", title: t("anime")},
+    {cat: "other", title: "热门"}
   ];
 
-  groups.forEach(g => {
-    const list = videos.filter(v => g.cats.includes(v.category) || (currentCategory !== "all" && g.cats.includes(currentCategory)));
+  order.forEach(g => {
+    let items;
     if (currentCategory !== "all") {
-      // 单一分类时只显示对应内容
-      if (!g.cats.includes(currentCategory) && !(currentCategory === "all")) return;
+      if (g.cat !== currentCategory && !(g.cat === "other" && !["live","ai","anime"].includes(currentCategory))) return;
+      items = list;
+    } else {
+      if (g.cat === "other") {
+        items = list.filter(v => !["live","ai","anime"].includes(v.category));
+      } else {
+        items = list.filter(v => v.category === g.cat);
+      }
     }
-    const filtered = currentCategory === "all" ? videos.filter(v => g.cats.includes(v.category)) : videos;
-    if (!filtered.length) return;
+    if (!items.length) return;
 
-    const section = document.createElement("section");
-    section.className = "section";
-    section.innerHTML = `
-      <div class="section-head">
-        <h2>${escapeHTML(g.title)}</h2>
-        <span class="count">${filtered.length} ${currentLanguage.startsWith("zh") ? "个视频" : "videos"}</span>
-      </div>
-      <div class="grid">${filtered.map(createCard).join("")}</div>`;
-    sections.appendChild(section);
+    const sec = document.createElement("div");
+    sec.innerHTML = `
+      <div class="sec-title">${g.title} <span>${items.length}</span></div>
+      <div class="grid">${items.map(createCard).join("")}</div>`;
+    box.appendChild(sec);
   });
 }
 
-function findVideo(id) { return VIDEO_LIBRARY.find(v => v.id === id); }
-
-function downloadVideo(video) {
+function download(id) {
   if (!DOWNLOAD_API_BASE) {
-    alert(currentLanguage.startsWith("zh") ? "请先设置 DOWNLOAD_API_BASE 为你的下载API地址" : "Please set DOWNLOAD_API_BASE first");
+    alert(currentLanguage.startsWith("zh") ? "请先设置 DOWNLOAD_API_BASE" : "Please set DOWNLOAD_API_BASE");
     return;
   }
-  const url = DOWNLOAD_API_BASE + encodeURIComponent(video.id);
   const a = document.createElement("a");
-  a.href = url;
-  a.download = video.downloadName || video.id + ".mp4";
+  a.href = DOWNLOAD_API_BASE + encodeURIComponent(id);
   a.target = "_blank";
   a.rel = "noopener";
   document.body.appendChild(a);
@@ -619,62 +592,53 @@ function downloadVideo(video) {
   a.remove();
 }
 
-function openDownloadCenter() {
-  const list = $("#downloadList");
+function openCenter() {
+  const list = $("#dlgList");
   list.innerHTML = "";
-  VIDEO_LIBRARY.forEach(video => {
-    const item = document.createElement("div");
-    item.className = "download-item";
-    const title = document.createElement("span");
-    title.textContent = localizedText(video.title);
-    const a = document.createElement("a");
-    a.href = "#";
-    a.textContent = t("downloadCenter");
-    a.addEventListener("click", e => { e.preventDefault(); downloadVideo(video); });
-    item.append(title, a);
-    list.appendChild(item);
+  VIDEO_LIBRARY.forEach(v => {
+    const div = document.createElement("div");
+    div.className = "dlg-item";
+    div.innerHTML = `<span>${loc(v.title)}</span>`;
+    const btn = document.createElement("button");
+    btn.textContent = t("dl");
+    btn.onclick = () => download(v.id);
+    div.appendChild(btn);
+    list.appendChild(div);
   });
-  $("#downloadsDialog").showModal();
+  $("#dlDialog").showModal();
 }
 
-/* 事件 */
-$("#sections").addEventListener("click", e => {
-  const btn = e.target.closest("button[data-action]");
+// 事件
+$("#content").addEventListener("click", e => {
+  const btn = e.target.closest(".dl-btn");
   const card = e.target.closest(".card");
-  if (btn) {
-    const v = findVideo(btn.dataset.id);
-    if (v) downloadVideo(v);
-    return;
-  }
-  if (card) {
-    const v = findVideo(card.dataset.id);
-    if (v) downloadVideo(v);
-  }
+  if (btn) { download(btn.dataset.id); return; }
+  if (card) download(card.dataset.id);
 });
-
-$("#pills").addEventListener("click", e => {
-  const btn = e.target.closest("button[data-category]");
+$("#cats").addEventListener("click", e => {
+  const btn = e.target.closest(".cat");
   if (!btn) return;
   currentCategory = btn.dataset.category;
-  document.querySelectorAll(".pill").forEach(p => p.classList.toggle("active", p === btn));
-  renderVideos();
+  document.querySelectorAll(".cat").forEach(c => c.classList.toggle("active", c === btn));
+  render();
 });
+$("#searchInput").addEventListener("input", render);
+$("#languageSelect").addEventListener("change", e => setLang(e.target.value));
+$("#bigDownload").addEventListener("click", openCenter);
+$("#closeDlg").addEventListener("click", () => $("#dlDialog").close());
+$("#dlDialog").addEventListener("click", e => { if (e.target === $("#dlDialog")) $("#dlDialog").close(); });
 
-$("#searchInput").addEventListener("input", renderVideos);
-$("#languageSelect").addEventListener("change", e => setLanguage(e.target.value, true));
-$("#downloadCenter").addEventListener("click", openDownloadCenter);
-$("#floatDownload").addEventListener("click", openDownloadCenter);
-$("#closeDownloads").addEventListener("click", () => $("#downloadsDialog").close());
-$("#downloadsDialog").addEventListener("click", e => {
-  if (e.target === $("#downloadsDialog")) $("#downloadsDialog").close();
-});
+// 初始化
+let pref = "auto";
+try { pref = localStorage.getItem("wqj-lang") || "auto"; } catch(e){}
+setLang(pref);
 
-$("#year").textContent = new Date().getFullYear();
-
-// 自动语言
-let preferred = "auto";
-try { preferred = localStorage.getItem("preferred-language") || "auto"; } catch(e){}
-setLanguage(preferred, false);
+// 模拟在线人数跳动
+setInterval(() => {
+  const base = 14340;
+  const n = base + Math.floor(Math.random() * 80 - 40);
+  $("#onlineCount").textContent = t("online") + n.toLocaleString();
+}, 4000);
 </script>
 </body>
 </html>

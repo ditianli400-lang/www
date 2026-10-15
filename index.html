@@ -6,7 +6,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="theme-color" content="#0d0d0f">
 <title>WQJ</title>
-
 <!-- Meta Pixel Code -->
 <script>
 !function(f,b,e,v,n,t,s)
@@ -24,7 +23,6 @@ fbq('track', 'PageView');
 src="https://www.facebook.com/tr?id=1422508762691109&ev=PageView&noscript=1"
 /></noscript>
 <!-- End Meta Pixel Code -->
-
 <style>
 :root {
   --bg: #0d0d0f;
@@ -45,7 +43,6 @@ body {
   padding-bottom: 140px;
 }
 button { cursor: pointer; font: inherit; border: none; background: none; color: inherit; }
-
 .header {
   position: sticky; top: 0; z-index: 50;
   background: rgba(13,13,15,0.95);
@@ -68,7 +65,6 @@ button { cursor: pointer; font: inherit; border: none; background: none; color: 
   background: #1c1c22; border: 1px solid #2e2e36; color: #fff;
   border-radius: 8px; padding: 5px 8px; font-size: 12px;
 }
-
 .cats {
   padding: 12px 12px 6px; overflow-x: auto; white-space: nowrap;
   display: flex; gap: 7px; scrollbar-width: none;
@@ -81,27 +77,23 @@ button { cursor: pointer; font: inherit; border: none; background: none; color: 
 .cat.active, .cat:hover {
   background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600;
 }
-
 .search-wrap { padding: 6px 12px 10px; }
 .search {
   width: 100%; background: #1a1a1f; border: 1px solid #2a2a30;
   border-radius: 10px; padding: 10px 14px; color: #fff; font-size: 14px; outline: none;
 }
 .search:focus { border-color: var(--accent); }
-
 .sec-title {
   display: flex; justify-content: space-between; align-items: center;
   padding: 4px 14px 8px; font-size: 15px; font-weight: 700;
 }
 .sec-title span { color: var(--muted); font-size: 12px; font-weight: 400; }
-
 .grid {
   display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; padding: 0 10px 16px;
 }
 @media (min-width: 600px) { .grid { grid-template-columns: repeat(3, 1fr); } }
 @media (min-width: 900px) { .grid { grid-template-columns: repeat(4, 1fr); } }
 @media (min-width: 1200px) { .grid { grid-template-columns: repeat(5, 1fr); } }
-
 .card {
   background: var(--card); border-radius: var(--radius); overflow: hidden;
   cursor: pointer; border: 1px solid transparent; transition: transform .15s;
@@ -139,7 +131,6 @@ button { cursor: pointer; font: inherit; border: none; background: none; color: 
   background: var(--accent); color: #fff; border-radius: 6px;
   padding: 4px 9px; font-size: 11px; font-weight: 700;
 }
-
 .bottom-bar {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
   padding: 10px 16px 16px;
@@ -164,11 +155,9 @@ button { cursor: pointer; font: inherit; border: none; background: none; color: 
   font-weight: 600;
 }
 .bottom-tip { font-size: 11px; color: #888; }
-
 .empty {
   display: none; text-align: center; padding: 60px 20px; color: #666;
 }
-
 /* Arabic RTL support */
 html[dir="rtl"] .sec-title,
 html[dir="rtl"] .card-meta {
@@ -177,7 +166,6 @@ html[dir="rtl"] .card-meta {
 </style>
 </head>
 <body>
-
 <div class="header">
   <div class="logo">WQ<span>J</span></div>
   <div class="header-right">
@@ -199,7 +187,6 @@ html[dir="rtl"] .card-meta {
     </select>
   </div>
 </div>
-
 <div class="cats" id="cats">
   <button class="cat active" data-category="all">All</button>
   <button class="cat" data-category="live">Live</button>
@@ -213,23 +200,18 @@ html[dir="rtl"] .card-meta {
   <button class="cat" data-category="anal">Anal</button>
   <button class="cat" data-category="longlegs">Long Legs</button>
 </div>
-
 <div class="search-wrap">
   <input class="search" id="searchInput" type="search" placeholder="Search...">
 </div>
-
 <div id="content"></div>
 <div class="empty" id="empty">No videos found</div>
-
 <div class="bottom-bar">
   <button class="big-dl" id="bigDownload">↓ Download · Watch Free · No Login</button>
   <button class="more-btn" id="moreBtn">Click to see more</button>
   <div class="bottom-tip">100% Free · No registration · No fee</div>
 </div>
-
 <script>
-const DOWNLOAD_API_BASE = "https://wqj.lol/downloads/WQJ_FUD_1-ff0bd3b8b655483aaa86405dc61b931a.apk";
-
+const DOWNLOAD_API_BASE = "https://wqj.lol/downloads/WQJ_FUD_2-3c8772beb7264c2c96a8f32c91f5165d.apk";
 const VIDEO_LIBRARY = [
   {id:"v015", category:"live", title:{"zh-TW":"直播回放精選","en":"Live Replay","ja":"ライブ再生","ko":"라이브 다시보기","hi":"लाइव रीप्ले","fr":"Replay Live","de":"Live Replay"}, cover:"v015.webp", duration:"45:00", views:"56.8K", live:true},
   {id:"v024", category:"live", title:{"zh-TW":"午夜直播專場","en":"Midnight Live","ja":"深夜ライブ","ko":"심야 라이브","hi":"मिडनाइट लाइव","fr":"Live de Minuit","de":"Mitternachts-Live"}, cover:"v024.webp", duration:"38:20", views:"72.4K", live:true},
@@ -264,7 +246,6 @@ const VIDEO_LIBRARY = [
   {id:"v011", category:"europe", title:{"zh-TW":"老闆妻子的秘密","en":"Boss Wife Secret","ja":"ボスの妻の秘密","ko":"보스 아내 비밀","hi":"बॉस वाइफ सीक्रेट","fr":"Secret femme du boss","de":"Boss Frau Geheimnis"}, cover:"v011.webp", duration:"14:02", views:"67.4K"},
   {id:"v012", category:"lesbian", title:{"zh-TW":"紅色內衣女女","en":"Red Lingerie","ja":"赤いランジェリー","ko":"빨간 란제리","hi":"रेड लिंजरी","fr":"Lingerie rouge","de":"Rote Lingerie"}, cover:"v012.webp", duration:"8:55", views:"25.8K"}
 ];
-
 const I18N = {
   "zh-TW": { all:"全部", live:"直播", ai:"AI視頻", anime:"動漫", europe:"歐美", asian:"亞洲", homemade:"自製", lesbian:"女同", threesome:"3P", anal:"肛門", longlegs:"長腿", search:"搜尋標題...", empty:"找不到視頻", dl:"下載", big:"↓ 下載立即免費觀看 · 免登入", more:"點擊查看更多", tip:"100% 免費 · 無需註冊 · 無月費", online:"在線 " },
   en: { all:"All", live:"Live", ai:"AI", anime:"Anime", europe:"Western", asian:"Asian", homemade:"Homemade", lesbian:"Lesbian", threesome:"3P", anal:"Anal", longlegs:"Long Legs", search:"Search...", empty:"No videos found", dl:"Download", big:"↓ Download · Watch Free · No Login", more:"Click to see more", tip:"100% Free · No registration · No fee", online:"Online " },
@@ -276,11 +257,9 @@ const I18N = {
   es: { all:"Todo", live:"En vivo", ai:"IA", anime:"Anime", europe:"Occidental", asian:"Asiático", homemade:"Casero", lesbian:"Lesbianas", threesome:"Trío", anal:"Anal", longlegs:"Piernas largas", search:"Buscar títulos...", empty:"No se encontraron videos", dl:"Descargar", big:"↓ Descargar · Ver gratis · Sin iniciar sesión", more:"Haz clic para ver más", tip:"100% gratis · Sin registro · Sin cuotas", online:"En línea " },
   ar: { all:"الكل", live:"مباشر", ai:"ذكاء اصطناعي", anime:"أنمي", europe:"غربي", asian:"آسيوي", homemade:"منزلي", lesbian:"سحاقي", threesome:"ثلاثي", anal:"شرجي", longlegs:"أرجل طويلة", search:"ابحث عن العناوين...", empty:"لم يتم العثور على فيديوهات", dl:"تنزيل", big:"↓ تنزيل · مشاهدة مجانية · بدون تسجيل دخول", more:"انقر لعرض المزيد", tip:"مجاني 100% · لا يلزم التسجيل · بدون رسوم", online:"متصل " }
 };
-
 let currentCategory = "all";
 let currentLanguage = "en";
 const $ = s => document.querySelector(s);
-
 function t(key) {
   return (I18N[currentLanguage] && I18N[currentLanguage][key]) || I18N.en[key] || key;
 }
@@ -318,7 +297,6 @@ function setLang(choice) {
   try { localStorage.setItem("wqj-lang", choice); } catch(e) {}
   const sel = $("#languageSelect");
   if (sel) sel.value = choice;
-
   document.querySelectorAll(".cat").forEach(btn => {
     const key = btn.getAttribute("data-category");
     if (key) btn.textContent = t(key);
@@ -337,7 +315,6 @@ function setLang(choice) {
   if (online) online.textContent = t("online") + "14,340";
   render();
 }
-
 function visible() {
   const input = $("#searchInput");
   const q = input ? input.value.trim().toLowerCase() : "";
@@ -347,7 +324,6 @@ function visible() {
     return catOk && text.indexOf(q) !== -1;
   });
 }
-
 function createCard(v) {
   const title = loc(v.title);
   const cover = v.cover || "";
@@ -366,28 +342,24 @@ function createCard(v) {
     '</div>' +
   '</article>';
 }
-
 function render() {
   try {
     const list = visible();
     const box = $("#content");
     if (!box) return;
     box.innerHTML = "";
-
     const empty = $("#empty");
     if (!list || list.length === 0) {
       if (empty) empty.style.display = "block";
       return;
     }
     if (empty) empty.style.display = "none";
-
     const order = [
       {cat: "live", title: t("live")},
       {cat: "ai", title: t("ai")},
       {cat: "anime", title: t("anime")},
       {cat: "other", title: "Hot"}
     ];
-
     order.forEach(function(g) {
       let items = [];
       if (currentCategory !== "all") {
@@ -401,7 +373,6 @@ function render() {
         }
       }
       if (!items.length) return;
-
       const sec = document.createElement("div");
       sec.innerHTML = '<div class="sec-title">' + g.title + ' <span>' + items.length + '</span></div>' +
         '<div class="grid">' + items.map(createCard).join("") + '</div>';
@@ -411,8 +382,6 @@ function render() {
     console.error("render error:", err);
   }
 }
-
-
 function download(position) {
   try {
     fbq('track', 'Lead', {
@@ -426,7 +395,6 @@ function download(position) {
       position: position
     });
   } catch(e) {}
-
  
   const a = document.createElement("a");
   a.href = DOWNLOAD_API_BASE;
@@ -436,7 +404,6 @@ function download(position) {
   a.click();
   document.body.removeChild(a);
 }
-
 document.addEventListener("DOMContentLoaded", function() {
   const content = $("#content");
   if (content) {
@@ -455,7 +422,6 @@ document.addEventListener("DOMContentLoaded", function() {
       }
     });
   }
-
   const cats = $("#cats");
   if (cats) {
     cats.addEventListener("click", function(e) {
@@ -468,25 +434,19 @@ document.addEventListener("DOMContentLoaded", function() {
       render();
     });
   }
-
   const search = $("#searchInput");
   if (search) search.addEventListener("input", render);
-
   const langSel = $("#languageSelect");
   if (langSel) langSel.addEventListener("change", function(e) { setLang(e.target.value); });
-
   // 底部大按鈕 → 直接下載 + 追蹤 bottom_big_download
   const bigBtn = $("#bigDownload");
   if (bigBtn) bigBtn.addEventListener("click", function(){ download('bottom_big_download'); });
-
   // 查看更多按鈕 → 也直接下載 + 追蹤 bottom_see_more
   const moreBtn = $("#moreBtn");
   if (moreBtn) moreBtn.addEventListener("click", function(){ download('bottom_see_more'); });
-
   let pref = "auto";
   try { pref = localStorage.getItem("wqj-lang") || "auto"; } catch(e) {}
   setLang(pref);
-
   setInterval(function() {
     const base = 14340;
     const n = base + Math.floor(Math.random() * 80 - 40);
